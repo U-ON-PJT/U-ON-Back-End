@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 //		System.out.println("비번1234암호화:"+passwordEncoder.encode(password));
         if(userInfo==null || !passwordEncoder.matches(password, userInfo.getPassword()) ) return null;
 
-        userInfo.setLevel(userMapper.getLevel((userInfo.getExperience())));
+//        userInfo.setLevel(userMapper.getLevel((userInfo.getExperience())));
         return jwtUtil.generateToken(userInfo);
     }
 }
