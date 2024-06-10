@@ -33,10 +33,12 @@ public class JWTUtil {
         Date expiration = new Date(now.getTime() + EXPIRATION_SECONDS * 1000);
 
         return Jwts.builder()
-                .claim("id", user.getId())
+                .claim("id", user.getUserId())
                 .claim("name", user.getName())
                 .claim("role", user.getRole())
-                .claim("birth", user.getBirth())
+                .claim("dongCode", user.getDongCode())
+                .claim("center", user.getCenter())
+                .claim("level", user.getLevel())
                 .expiration(expiration)				//만료 시간
                 .signWith(getSecretKey())
                 .compact();

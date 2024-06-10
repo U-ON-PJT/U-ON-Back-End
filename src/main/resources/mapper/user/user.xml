@@ -4,69 +4,82 @@
 
 <mapper namespace="com.uon.user.model.mapper.UserMapper">
 	<select id="idExist" parameterType="string" resultType="int">
-		select count(id)
+		select count(user_id)
 		from user
-		where id=#{userId};
+		where user_id=#{userId};
 	</select>
-	
+
 	<insert id="register" parameterType="user">
 		insert into user
-		(id, password, name, email, address, birth, point, job, married)
+		(user_id, password, name, birth, role, phone, dong_code, center, experience, point)
 		values
-		(#{id}, #{password}, #{name}, #{email}, #{address}, #{birth}, #{point}, #{job}, #{married})		
+		(#{userId}, #{password}, #{name}, #{birth}, #{role}, #{phone}, #{dongCode}, #{center}, #{experience}, #{point})
 	</insert>
-	
+
 	<select id="login" parameterType="string" resultType="user">
-		select id, password, name, email, address, birth, point, job, married 
+		select user_id, password, name, birth, role, phone, dong_code, center, experience, point
 		from user
-		where id=#{id}
-	</select>	
-	
-	<select id="getUserInfo" parameterType="user" resultType="user">
-		select id, password, name, email, address, birth, point, job, married 
-		from user
-		where id=#{id}
-	</select>
-	
-	<update id="updateUserInfo" parameterType="user">
-		update user set password=#{password}, name=#{name}, email=#{email}, address=#{address}, birth=#{birth}, point=#{point}, job=#{job}, married=#{married}
-		where id=#{id};
-	</update>
-	
-	<delete id="deleteUser" parameterType="string">
-		delete from user
-		where id=#{userId}
-	</delete>
-	
-	<select id="getInterestArea" parameterType="string" resultType="dongCode">
-		select id, dongCode
-		from interest_area
 		where user_id=#{userId}
 	</select>
-	
-	<select id="findByDongCode" parameterType="string" resultType="string">
-		select dongName
-		from dongCode
-		where dongCode = #{dongCode};
+
+	<select id="getLevel" parameterType="int" resultType="int">
+		SELECT
+			CASE
+			WHEN #{experience} >= 0 AND #{experience} < 1000 THEN 1
+			WHEN #{experience} >= 1000 AND #{experience} < 2000 THEN 2
+			WHEN #{experience} >= 2000 AND #{experience} < 3000 THEN 3
+			WHEN #{experience} >= 3000 AND #{experience} < 5000 THEN 4
+			WHEN #{experience} >= 5000 THEN 5
+		END AS level
+		FROM level
+		LIMIT 1
 	</select>
-	
-	
-	<select id="findByName" parameterType="map" resultType="string">
-		select dongCode
-		from dongCode
-		where sidoName = #{sidoName}
-		and gugunName = #{gugunName}
-		and dongName = #{dongName};
-	</select>
-	
-	<insert id="insertDongCode" parameterType="dongCode">
-		insert into interest_area(user_id, dongCode)
-		values(#{userId}, #{dongCode})
-	</insert>
-	
-	<delete id="deleteDongCode" parameterType="dongCode">
-		delete from interest_area
-		where id = #{id}
-		and user_id = #{userId}
-	</delete>
+<!--	-->
+<!--	<select id="getUserInfo" parameterType="user" resultType="user">-->
+<!--		select id, password, name, email, address, birth, point, job, married -->
+<!--		from user-->
+<!--		where id=#{id}-->
+<!--	</select>-->
+<!--	-->
+<!--	<update id="updateUserInfo" parameterType="user">-->
+<!--		update user set password=#{password}, name=#{name}, email=#{email}, address=#{address}, birth=#{birth}, point=#{point}, job=#{job}, married=#{married}-->
+<!--		where id=#{id};-->
+<!--	</update>-->
+<!--	-->
+<!--	<delete id="deleteUser" parameterType="string">-->
+<!--		delete from user-->
+<!--		where id=#{userId}-->
+<!--	</delete>-->
+<!--	-->
+<!--	<select id="getInterestArea" parameterType="string" resultType="dongCode">-->
+<!--		select id, dongCode-->
+<!--		from interest_area-->
+<!--		where user_id=#{userId}-->
+<!--	</select>-->
+<!--	-->
+<!--	<select id="findByDongCode" parameterType="string" resultType="string">-->
+<!--		select dongName-->
+<!--		from dongCode-->
+<!--		where dongCode = #{dongCode};-->
+<!--	</select>-->
+<!--	-->
+<!--	-->
+<!--	<select id="findByName" parameterType="map" resultType="string">-->
+<!--		select dongCode-->
+<!--		from dongCode-->
+<!--		where sidoName = #{sidoName}-->
+<!--		and gugunName = #{gugunName}-->
+<!--		and dongName = #{dongName};-->
+<!--	</select>-->
+<!--	-->
+<!--	<insert id="insertDongCode" parameterType="dongCode">-->
+<!--		insert into interest_area(user_id, dongCode)-->
+<!--		values(#{userId}, #{dongCode})-->
+<!--	</insert>-->
+<!--	-->
+<!--	<delete id="deleteDongCode" parameterType="dongCode">-->
+<!--		delete from interest_area-->
+<!--		where id = #{id}-->
+<!--		and user_id = #{userId}-->
+<!--	</delete>-->
 </mapper>
