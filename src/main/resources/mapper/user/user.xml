@@ -22,18 +22,18 @@
 		where user_id=#{userId}
 	</select>
 
-	<select id="getLevel" parameterType="int" resultType="int">
-		SELECT
-			CASE
-			WHEN #{experience} >= 0 AND #{experience} < 1000 THEN 1
-			WHEN #{experience} >= 1000 AND #{experience} < 2000 THEN 2
-			WHEN #{experience} >= 2000 AND #{experience} < 3000 THEN 3
-			WHEN #{experience} >= 3000 AND #{experience} < 5000 THEN 4
-			WHEN #{experience} >= 5000 THEN 5
-		END AS level
-		FROM level
-		LIMIT 1
-	</select>
+<!--	<select id="getLevel" parameterType="int" resultType="int">-->
+<!--		SELECT-->
+<!--			CASE-->
+<!--			WHEN #{experience} >= 0 AND #{experience} < 1000 THEN 1-->
+<!--			WHEN #{experience} >= 1000 AND #{experience} < 2000 THEN 2-->
+<!--			WHEN #{experience} >= 2000 AND #{experience} < 3000 THEN 3-->
+<!--			WHEN #{experience} >= 3000 AND #{experience} < 5000 THEN 4-->
+<!--			WHEN #{experience} >= 5000 THEN 5-->
+<!--		END AS level-->
+<!--		FROM level-->
+<!--		LIMIT 1-->
+<!--	</select>-->
 <!--	-->
 <!--	<select id="getUserInfo" parameterType="user" resultType="user">-->
 <!--		select id, password, name, email, address, birth, point, job, married -->
