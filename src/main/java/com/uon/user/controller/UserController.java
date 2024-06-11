@@ -15,6 +15,17 @@ public class UserController {
     private final UserService userService;
     private final JWTUtil jwtUtil;
 
+    // 회원가입
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> register(@RequestBody User user) {
+        int result = userService.register(user);
+        if (result != 1) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근 - id는 unique한 값");
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    // id 중복 확인
     @GetMapping("/exist/{userId}")
     public ResponseEntity<?> idExist(@PathVariable("userId") String userId) {
         int isDup = userService.idExist(userId);
@@ -22,16 +33,6 @@ public class UserController {
         if (isDup == 1)	return ResponseEntity.status(HttpStatus.CONFLICT).body("id 중복!");
 
         return ResponseEntity.ok("생성가능!");
-    }
-
-    @PostMapping("/sign-up")
-    public ResponseEntity<?> register(@RequestBody User user) {
-
-        int result = userService.register(user);
-        if (result != 1) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근");
-        }
-        return ResponseEntity.ok(result);
     }
 
     //로그인
@@ -44,4 +45,19 @@ public class UserController {
 
         return ResponseEntity.ok(token);
     }
+
+    // 회원 탈퇴
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") String tokenHeader, @PathVariable("userId") String userId) {
+        String id = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+        if(!id.equals(userId)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근입니다.");
+
+        int result = userService.deleteUser(userId);
+        if (result == 0) {
+            return ResponseEntity.status(404).build();
+        }
+        return ResponseEntity.ok(result);
+    }
+
+
 }

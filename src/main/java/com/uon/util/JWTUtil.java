@@ -35,10 +35,13 @@ public class JWTUtil {
         return Jwts.builder()
                 .claim("id", user.getUserId())
                 .claim("name", user.getName())
+                .claim("birth", user.getBirth())
                 .claim("role", user.getRole())
                 .claim("dongCode", user.getDongCode())
                 .claim("center", user.getCenter())
+                .claim("experience", user.getExperience())
                 .claim("level", user.getLevel())
+                .claim("point", user.getPoint())
                 .expiration(expiration)				//만료 시간
                 .signWith(getSecretKey())
                 .compact();
