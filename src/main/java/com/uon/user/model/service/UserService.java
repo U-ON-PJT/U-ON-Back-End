@@ -2,10 +2,12 @@ package com.uon.user.model.service;
 
 import com.uon.user.dto.User;
 public interface UserService {
-    int register(User user);
     int idExist(String userId);
+    int register(User user);
     String login(User user);
     int deleteUser(String userId);
-
+    User findById(String userId);
+    int updateUser(User user);
+    int updatePassword(User user);
 
 }
