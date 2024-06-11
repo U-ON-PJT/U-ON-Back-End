@@ -19,9 +19,9 @@ public class UserController {
     @PostMapping("/sign-up")
     public ResponseEntity<?> register(@RequestBody User user) {
         int result = userService.register(user);
-        if (result != 1) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근 - id는 unique한 값");
-        }
+
+        if (result != 1) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근 - id는 unique한 값");
+
         return ResponseEntity.ok(result);
     }
 
@@ -47,17 +47,52 @@ public class UserController {
     }
 
     // 회원 탈퇴
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") String tokenHeader, @PathVariable("userId") String userId) {
-        String id = jwtUtil.getIdFromToken(tokenHeader.substring(7));
-        if(!id.equals(userId)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근입니다.");
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") String tokenHeader) {
+        String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+//        if(!id.equals(userId)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근입니다.");
 
         int result = userService.deleteUser(userId);
-        if (result == 0) {
-            return ResponseEntity.status(404).build();
-        }
+
+        if (result == 0) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("해당 id를 가진 회원은 없음.");
+
         return ResponseEntity.ok(result);
     }
 
+    // 회원 정보 조회
+    @GetMapping("/my-page")
+    public ResponseEntity<?> findById(@RequestHeader("Authorization") String tokenHeader) {
+        String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
 
+        User user = userService.findById(userId);
+
+        if(user == null) return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("해당 id를 가진 회원은 없음.");
+
+        return ResponseEntity.ok(user);
+    }
+
+    // 회원 정보 변경
+    @PutMapping("/my-page")
+    public ResponseEntity<?> updateUser(@RequestHeader("Authorization") String tokenHeader, @RequestBody User user) {
+        String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+        if(!userId.equals(user.getUserId())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근입니다.");
+
+        int result = userService.updateUser(user);
+
+        if (result == 0) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호 오류 / 지역 없음");
+
+        return ResponseEntity.ok(result);
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<?> updatePassword(@RequestHeader("Authorization") String tokenHeader, @RequestBody User user) {
+        String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+        user.setUserId(userId);
+
+        int result = userService.updatePassword(user);
+
+        if (result == 0) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호 오류");
+
+        return ResponseEntity.ok(result);
+    }
 }

@@ -6,8 +6,11 @@ import lombok.Data;
 public class User {
     private String userId;
     private String password;
+    private String newPassword;
     private String name;
     private String phone;
+    private String sidoName;
+    private String gugunName;
     private String dongCode;
     private String center;
     private String birth;
