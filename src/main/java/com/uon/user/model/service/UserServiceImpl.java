@@ -7,6 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -16,18 +20,27 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
+    public int idExist(String userId) {
+        return userMapper.idExist(userId);
+    }
+
+    @Override
+    @Transactional
     public int register(User user) {
         if(userMapper.idExist(user.getUserId()) == 1) return 0;
+
+        Map<String, String> param = new HashMap<>();
+        param.put("sidoName", user.getSidoName());
+        param.put("gugunName", user.getGugunName());
+
+        user.setDongCode(userMapper.findByName(param));
+
+        if(user.getDongCode().equals(null)) return 0;
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
         return userMapper.register(user);
-    }
-
-    @Override
-    public int idExist(String userId) {
-        return userMapper.idExist(userId);
     }
 
     @Override
@@ -57,5 +70,52 @@ public class UserServiceImpl implements UserService {
         return userMapper.deleteUser(userId);
     }
 
+    @Override
+    @Transactional
+    public User findById(String userId) {
+        // user table에서 password, level, experience, role 안가져 옴
+        User user = userMapper.findById(userId);
 
+        User location =  userMapper.findByDongCode(user.getDongCode());
+
+        user.setSidoName(location.getSidoName());
+        user.setGugunName(location.getGugunName());
+
+        return user;
+    }
+
+    @Override
+    @Transactional
+    public int updateUser(User user) {
+        String password = userMapper.getPassword(user.getUserId());
+//        System.out.println(password);
+        if(password == null || !passwordEncoder.matches(user.getPassword(), password)) return 0;
+
+        Map<String, String> param = new HashMap<>();
+        param.put("sidoName", user.getSidoName());
+        param.put("gugunName", user.getGugunName());
+
+        user.setDongCode(userMapper.findByName(param));
+
+        if(user.getDongCode() == null) return 0;
+
+        String encodedPassword = passwordEncoder.encode(user.getNewPassword());
+        user.setNewPassword(encodedPassword);
+
+        return userMapper.updateUser(user);
+    }
+
+    @Override
+    @Transactional
+    public int updatePassword(User user) {
+        String password = userMapper.getPassword(user.getUserId());
+
+        if(password == null || !passwordEncoder.matches(user.getPassword(), password)) return 0;
+
+        String encodedPassword = passwordEncoder.encode(user.getNewPassword());
+        user.setNewPassword(encodedPassword);
+        System.out.println(user.getNewPassword());
+
+        return userMapper.updatePassword(user);
+    }
 }
