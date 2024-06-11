@@ -11,9 +11,9 @@
 
 	<insert id="register" parameterType="user">
 		insert into user
-		(user_id, password, name, birth, role, phone, dong_code, center, experience, point)
+		(user_id, password, name, birth, role, phone, dong_code, center)
 		values
-		(#{userId}, #{password}, #{name}, #{birth}, #{role}, #{phone}, #{dongCode}, #{center}, #{experience}, #{point})
+		(#{userId}, #{password}, #{name}, #{birth}, #{role}, #{phone}, #{dongCode}, #{center})
 	</insert>
 
 	<select id="login" parameterType="string" resultType="user">
@@ -21,6 +21,11 @@
 		from user
 		where user_id=#{userId}
 	</select>
+
+	<delete id="deleteUser" parameterType="string">
+		delete from user
+		where user_id=#{userId}
+	</delete>
 
 <!--	<select id="getLevel" parameterType="int" resultType="int">-->
 <!--		SELECT-->
@@ -46,10 +51,6 @@
 <!--		where id=#{id};-->
 <!--	</update>-->
 <!--	-->
-<!--	<delete id="deleteUser" parameterType="string">-->
-<!--		delete from user-->
-<!--		where id=#{userId}-->
-<!--	</delete>-->
 <!--	-->
 <!--	<select id="getInterestArea" parameterType="string" resultType="dongCode">-->
 <!--		select id, dongCode-->
