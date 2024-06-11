@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class AuthInterceptor implements HandlerInterceptor {
+public class AuthInterceptor implements HandlerInterceptor{
     private final JWTUtil jwtUtil;
 
     @Override
@@ -25,29 +25,38 @@ public class AuthInterceptor implements HandlerInterceptor {
         String method = request.getMethod();
         String requestURI = request.getRequestURI();
         log.debug("AuthInterceptor()의 preHandle실행 method:{}", method);
-//		System.out.println(method);
-//		System.out.println(requestURI);
 
         log.debug(requestURI);
-        if (method.equals("OPTIONS")) return true;    //preflight request 허용
-        if (method.equals("GET")) return true;        //조회요청은 권한 필요 없음
+        if(requestURI.startsWith("/uon/users")) return checkToken(request, response);	//GET요청임에도 권한이 필요한 경우
+        if (method.equals("OPTIONS")) return true;	//preflight request 허용
+        if(method.equals("GET")) return true;		//조회요청은 권한 필요 없음
 
-        String tokenHeader = request.getHeader("Authorization");    //Header에서 토큰 정보 추출
+        return checkToken(request, response);
+    }
 
-        if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
+    private boolean checkToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requestURI = request.getRequestURI();
+
+//        System.out.println("걸렸으" + requestURI);
+        if(requestURI.startsWith("/uon/users/exist") || requestURI.startsWith("/uon/users/sign-up") || requestURI.startsWith("/uon/users/login") ) return true;
+
+        String tokenHeader = request.getHeader("Authorization");	//Header에서 토큰 정보 추출
+
+        //토큰 헤더가 없거나 Bearer로 시작하지 않는 경우
+        if(tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
             response.setStatus(401);
             response.getWriter().write("Unauthorized");
             return false;
         }
-
         //토큰이 유효하지 않은 경우
         String token = tokenHeader.substring(7);
-        if (!jwtUtil.isValid(token)) {
+        if(!jwtUtil.isValid(token) ) {
             response.setStatus(401);
             response.getWriter().write("Unauthorized");
             return false;
         }
 
+        //토큰이 유효한 경우
         return true;
     }
 }

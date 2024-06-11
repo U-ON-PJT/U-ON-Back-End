@@ -5,9 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface UserMapper {
-    User login(String userId);
-    int idExist(String userId);
     int register(User user);
-
-    int getLevel(int experience);
+    int idExist(String userId);
+    User login(String userId);
+    int deleteUser(String userId);
 }
