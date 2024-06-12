@@ -38,4 +38,14 @@
         from activity
         where type=#{type}
     </select>
+
+    <select id="selectMatchingRoom" parameterType="int" resultType="activity">
+        select
+        activity_id as activityId, activity_address as activityAddress, activity_date as activityDate, content,
+        create_time as createTime, current_participant as currentParticipant, dong_code as dongCode,
+        deadline, is_completed as isCompleted, is_deadline as isDeadline, max_participant as maxParticipant,
+        min_participant as minParticipant, title, type, user_id as userId
+        from activity
+        where activity_id=#{activityId}
+    </select>
 </mapper>

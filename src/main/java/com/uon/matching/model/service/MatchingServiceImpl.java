@@ -56,4 +56,15 @@ public class MatchingServiceImpl implements MatchingService {
             return null;
         }
     }
+
+    @Override
+    public Activity selectMatchingRoom(int activityId) {
+        try {
+            Activity activityInfo = matchingMapper.selectMatchingRoom(activityId);
+            return activityInfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

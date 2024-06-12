@@ -66,4 +66,14 @@ public class MatchingController {
         }
         return ResponseEntity.status(400).body("Faild! selectMatchingRoomOfType()");
     }
+
+    @GetMapping("/detail/{activityId}")
+    public ResponseEntity<?> selectMatchingRoom(@PathVariable("activityId") int activityId) {
+        Activity activityInfo = matchingService.selectMatchingRoom(activityId);
+
+        if (activityInfo != null) {
+            return ResponseEntity.status(200).body(activityInfo);
+        }
+        return ResponseEntity.status(400).body("Faild! selectMatchingRoom()");
+    }
 }
