@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uon.matching.model.mapper.MatchingMapper">
+
+    <insert id="insertMatchingRoom" parameterType="activity">
+        insert into activity
+        (user_id, title, content, activity_address, activity_date, current_participant, max_participant,
+        min_participant, deadline, dong_code, is_completed, is_deadline, type, create_time)
+        values
+        (#{userId}, #{title}, #{content}, #{activityAddress}, #{activityDate}, #{currentParticipant}, #{maxParticipant},
+        #{minParticipant}, #{deadline}, #{dongCode}, #{isCompleted}, #{isDeadline}, #{type}, now())
+    </insert>
+
+</mapper>
