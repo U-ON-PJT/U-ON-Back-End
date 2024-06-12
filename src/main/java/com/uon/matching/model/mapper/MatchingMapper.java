@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface MatchingMapper {
 
     public int insertMatchingRoom(Activity activity);
+    public int updateMatchingRoom(Activity activity);
 }

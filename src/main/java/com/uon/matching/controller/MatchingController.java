@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,5 +29,16 @@ public class MatchingController {
             return ResponseEntity.status(200).body("SUCCESS! CREATE MATCHING ROOM");
         }
         return ResponseEntity.status(400).body("FAILD! CREATE MATCHING ROOM");
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateMatchingRoom(@RequestBody Activity activity,
+                                                @RequestHeader("Authorization") String tokenHeader) {
+        int isSuccess = matchingService.updateMatchingRoom(activity);
+
+        if (isSuccess == 1) {
+            return ResponseEntity.status(200).body("SUCCESS! UPDATE MATCHING ROOM");
+        }
+        return ResponseEntity.status(400).body("FAILD! UPDATE MATCHING ROOM");
     }
 }

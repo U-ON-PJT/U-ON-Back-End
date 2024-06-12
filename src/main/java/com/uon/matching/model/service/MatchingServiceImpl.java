@@ -22,4 +22,15 @@ public class MatchingServiceImpl implements MatchingService {
             return -1;
         }
     }
+
+    @Override
+    public int updateMatchingRoom(Activity activity) {
+        try {
+            int isSuccess = matchingMapper.updateMatchingRoom(activity);
+            return isSuccess;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }
