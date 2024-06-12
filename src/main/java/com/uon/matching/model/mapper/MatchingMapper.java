@@ -13,4 +13,5 @@ public interface MatchingMapper {
     List<Activity> selectAllMatchingRoom();
     List<Activity> selectMatchingRoomOfType(int type);
     Activity selectMatchingRoom(int activityId);
+    int deleteMatchingRoom(int activityId);
 }

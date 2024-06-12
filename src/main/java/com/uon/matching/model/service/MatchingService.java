@@ -10,4 +10,5 @@ public interface MatchingService {
     List<Activity> selectAllMatchingRoom();
     List<Activity> selectMatchingRoomOfType(int type);
     Activity selectMatchingRoom(int activityId);
+    int deleteMatchingRoom(String userId, int activityId);
 }

@@ -67,4 +67,21 @@ public class MatchingServiceImpl implements MatchingService {
             return null;
         }
     }
+
+    @Override
+    public int deleteMatchingRoom(String userId, int activityId) {
+        try {
+            Activity activityInfo = matchingMapper.selectMatchingRoom(activityId);
+
+            if (!userId.equals(activityInfo.getUserId())) {
+                return -1;
+            }
+
+            matchingMapper.deleteMatchingRoom(activityId);
+            return 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

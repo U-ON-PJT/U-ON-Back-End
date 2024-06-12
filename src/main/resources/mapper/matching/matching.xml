@@ -48,4 +48,9 @@
         from activity
         where activity_id=#{activityId}
     </select>
+
+    <delete id="deleteMatchingRoom" parameterType="int">
+        delete from activity
+        where activity_id=#{activityId}
+    </delete>
 </mapper>
