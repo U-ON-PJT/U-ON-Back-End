@@ -13,7 +13,6 @@ public class MatchingServiceImpl implements MatchingService {
 
     private final MatchingMapper matchingMapper;
 
-
     @Override
     public int insertMatchingRoom(Activity activity) {
         try {
@@ -41,6 +40,17 @@ public class MatchingServiceImpl implements MatchingService {
         try {
             List<Activity> activityList = matchingMapper.selectAllMatchingRoom();
             return activityList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Activity> selectMatchingRoomOfType(int type) {
+        try {
+            List<Activity> activityListOfType = matchingMapper.selectMatchingRoomOfType(type);
+            return activityListOfType;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

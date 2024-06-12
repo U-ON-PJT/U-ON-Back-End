@@ -54,4 +54,16 @@ public class MatchingController {
 
         return ResponseEntity.status(400).body("Faild! selectAllMatchingRoom()");
     }
+
+    @GetMapping("/{type}")
+    public ResponseEntity<?> selectMatchingRoomOfType(@PathVariable("type") int type) {
+        List<Activity> activityListOfType = matchingService.selectMatchingRoomOfType(type);
+
+        if (activityListOfType.isEmpty()) {
+            return ResponseEntity.status(200).body("Empty Matching Room Of Type");
+        } else if (activityListOfType != null) {
+            return ResponseEntity.status(200).body(activityListOfType);
+        }
+        return ResponseEntity.status(400).body("Faild! selectMatchingRoomOfType()");
+    }
 }

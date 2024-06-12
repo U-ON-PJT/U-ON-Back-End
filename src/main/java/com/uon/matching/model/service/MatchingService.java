@@ -5,8 +5,8 @@ import com.uon.matching.dto.Activity;
 import java.util.List;
 
 public interface MatchingService {
-    public int insertMatchingRoom(Activity activity);
-    public int updateMatchingRoom(Activity activity);
-    public List<Activity> selectAllMatchingRoom();
-
+    int insertMatchingRoom(Activity activity);
+    int updateMatchingRoom(Activity activity);
+    List<Activity> selectAllMatchingRoom();
+    List<Activity> selectMatchingRoomOfType(int type);
 }
