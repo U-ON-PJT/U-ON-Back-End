@@ -40,6 +40,6 @@
 
     <update id="update" parameterType="board">
         update board
-        
+        set
     </update>
 </mapper>
