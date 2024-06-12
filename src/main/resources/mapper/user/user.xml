@@ -54,7 +54,7 @@
 	</select>
 
 	<update id="updateUser" parameterType="user">
-		update user set password = #{newPassword}, phone = #{phone}, dong_code = #{dongCode}, center = #{center}
+		update user set name = #{name}, phone = #{phone}, dong_code = #{dongCode}, center = #{center}
 		where user_id=#{userId};
 	</update>
 
@@ -62,6 +62,14 @@
 		update user set password = #{newPassword}
 		where user_id = #{userId};
 	</update>
+
+	<select id="getId" parameterType="user" resultType="user">
+		select user_id
+		from user
+		where name = #{name}
+		and phone = #{phone}
+		and birth = #{birth}
+	</select>
 
 
 <!--	<select id="getInterestArea" parameterType="string" resultType="dongCode">-->

@@ -1,6 +1,9 @@
 package com.uon.user.model.service;
 
 import com.uon.user.dto.User;
+
+import java.util.List;
+
 public interface UserService {
     int idExist(String userId);
     int register(User user);
@@ -9,5 +12,6 @@ public interface UserService {
     User findById(String userId);
     int updateUser(User user);
     int updatePassword(User user);
+    List<String> getId(User user);
 
 }

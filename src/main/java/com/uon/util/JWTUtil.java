@@ -71,7 +71,7 @@ public class JWTUtil {
         return id;
     }
 
-/*    //토큰으로 부터 role 조회
+    //토큰으로 부터 role 조회
     public String getRoleFromToken(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(getSecretKey())
@@ -84,6 +84,7 @@ public class JWTUtil {
         return role;
     }
 
+    /*
     //토큰으로 부터 birth 조회
     public String getbirthFromToken(String token) {
         Claims claims = Jwts.parser()
