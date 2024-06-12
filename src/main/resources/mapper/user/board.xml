@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uon.board.model.mapper.BoardMapper">
+    <select id="getBoard" resultType="board">
+        select board_id, user_id, title, content, create_time
+        from board
+        where type=#{type}
+    </select>
+    <select id="getBoardImages" parameterType="int">
+        select save_name, image_name, image_path
+        from board_image
+        where board_id = #{boardId}
+    </select>
+
+    <select id="getBoardById" parameterType="int" resultType="board">
+        select user_id, type, title, content, create_time
+        from  board
+        where board_id = #{boardId}
+    </select>
+
+    <insert id="insert" parameterType="board">
+        insert into board
+            (user_id, type, title, content)
+         values
+             (#{userId}, #{type}, #{title}, #{content})
+    </insert>
+
+    <insert id="insert" parameterType="boardImage">
+        insert into boardImage
+            (user_id, type, title, content)
+        values
+            (#{userId}, #{type}, #{title}, #{content})
+    </insert>
+
+    <select id="getBoardId" resultType="int">
+        select MAX(board_id)
+        from board
+    </select>
+
+    <update id="update" parameterType="board">
+        update board
+        
+    </update>
+</mapper>
