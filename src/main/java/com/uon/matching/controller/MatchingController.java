@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/activities")
@@ -40,5 +42,16 @@ public class MatchingController {
             return ResponseEntity.status(200).body("SUCCESS! UPDATE MATCHING ROOM");
         }
         return ResponseEntity.status(400).body("FAILD! UPDATE MATCHING ROOM");
+    }
+
+    @GetMapping
+    public ResponseEntity<?> selectAllMatchingRoom() {
+        List<Activity> activityList = matchingService.selectAllMatchingRoom();
+        System.out.println(activityList);
+        if (activityList != null) {
+            return ResponseEntity.status(200).body(activityList);
+        }
+
+        return ResponseEntity.status(400).body("Faild! selectAllMatchingRoom()");
     }
 }

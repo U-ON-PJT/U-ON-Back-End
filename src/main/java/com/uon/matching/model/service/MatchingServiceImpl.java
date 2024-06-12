@@ -5,6 +5,8 @@ import com.uon.matching.model.mapper.MatchingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MatchingServiceImpl implements MatchingService {
@@ -31,6 +33,17 @@ public class MatchingServiceImpl implements MatchingService {
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
+        }
+    }
+
+    @Override
+    public List<Activity> selectAllMatchingRoom() {
+        try {
+            List<Activity> activityList = matchingMapper.selectAllMatchingRoom();
+            return activityList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
