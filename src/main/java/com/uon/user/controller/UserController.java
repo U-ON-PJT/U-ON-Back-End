@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -79,11 +81,12 @@ public class UserController {
 
         int result = userService.updateUser(user);
 
-        if (result == 0) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호 오류 / 지역 없음");
+        if (result == 0) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("지역 없음");
 
         return ResponseEntity.ok(result);
     }
 
+    // 비밀번호 변경
     @PutMapping("/password")
     public ResponseEntity<?> updatePassword(@RequestHeader("Authorization") String tokenHeader, @RequestBody User user) {
         String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
@@ -94,5 +97,15 @@ public class UserController {
         if (result == 0) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호 오류");
 
         return ResponseEntity.ok(result);
+    }
+
+    // 아이디 찾기
+    @PostMapping("/user-id")
+    public ResponseEntity<?> findId(@RequestBody User user) {
+       List<String> userId = userService.getId(user);
+
+        if (userId == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("id 없음");
+
+        return ResponseEntity.ok(userId);
     }
 }

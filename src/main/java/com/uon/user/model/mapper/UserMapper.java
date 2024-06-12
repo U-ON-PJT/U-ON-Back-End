@@ -3,6 +3,7 @@ package com.uon.user.model.mapper;
 import com.uon.user.dto.User;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -17,4 +18,5 @@ public interface UserMapper {
     String getPassword(String userId);
     int updateUser(User user);
     int updatePassword(User user);
+    List<String> getId(User user);
 }

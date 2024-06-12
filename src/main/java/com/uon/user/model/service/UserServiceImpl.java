@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -87,9 +88,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public int updateUser(User user) {
-        String password = userMapper.getPassword(user.getUserId());
+//        String password = userMapper.getPassword(user.getUserId());
 //        System.out.println(password);
-        if(password == null || !passwordEncoder.matches(user.getPassword(), password)) return 0;
+//        if(password == null || !passwordEncoder.matches(user.getPassword(), password)) return 0;
 
         Map<String, String> param = new HashMap<>();
         param.put("sidoName", user.getSidoName());
@@ -99,8 +100,8 @@ public class UserServiceImpl implements UserService {
 
         if(user.getDongCode() == null) return 0;
 
-        String encodedPassword = passwordEncoder.encode(user.getNewPassword());
-        user.setNewPassword(encodedPassword);
+//        String encodedPassword = passwordEncoder.encode(user.getNewPassword());
+//        user.setNewPassword(encodedPassword);
 
         return userMapper.updateUser(user);
     }
@@ -117,5 +118,10 @@ public class UserServiceImpl implements UserService {
         System.out.println(user.getNewPassword());
 
         return userMapper.updatePassword(user);
+    }
+
+    @Override
+    public List<String> getId(User user) {
+        return userMapper.getId(user);
     }
 }
