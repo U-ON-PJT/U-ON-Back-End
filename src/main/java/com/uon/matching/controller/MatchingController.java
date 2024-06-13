@@ -87,6 +87,19 @@ public class MatchingController {
         if (isSuccess == 0) {
             return ResponseEntity.status(200).body("Success! Delete Matching Room");
         }
-        return ResponseEntity.status(400).body("Faild! Delete Matching Room");
+        return ResponseEntity.status(400).body("Failed! Delete Matching Room");
+    }
+
+    @PutMapping("/closing/{activityId}")
+    public ResponseEntity<?> updateIsDeadline(@PathVariable("activityId") int activityId,
+                                              @RequestHeader("Authorization") String tokenHeader) {
+        String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+
+        int isSuccess = matchingService.updateIsDeadline(userId, activityId);
+
+        if (isSuccess == 0) {
+            return ResponseEntity.status(200).body("Success! Update IsDeadLine");
+        }
+        return ResponseEntity.status(400).body("Failed! Update IsDeadLine");
     }
 }

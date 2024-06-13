@@ -84,4 +84,21 @@ public class MatchingServiceImpl implements MatchingService {
             return -1;
         }
     }
+
+    @Override
+    public int updateIsDeadline(String userId, int activityId) {
+        try {
+            Activity activityInfo = matchingMapper.selectMatchingRoom(activityId);
+
+            if (!userId.equals(activityInfo.getUserId())) {
+                return -1;
+            }
+
+            matchingMapper.updateIsDeadline(activityId);
+            return 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

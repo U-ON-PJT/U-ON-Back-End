@@ -53,4 +53,10 @@
         delete from activity
         where activity_id=#{activityId}
     </delete>
+
+    <update id="updateIsDeadline" parameterType="int">
+        update activity set
+        is_deadline=1
+        where activity_id=#{activityId};
+    </update>
 </mapper>

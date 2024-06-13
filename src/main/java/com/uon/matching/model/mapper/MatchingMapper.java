@@ -14,4 +14,5 @@ public interface MatchingMapper {
     List<Activity> selectMatchingRoomOfType(int type);
     Activity selectMatchingRoom(int activityId);
     int deleteMatchingRoom(int activityId);
+    int updateIsDeadline(int activityId);
 }
