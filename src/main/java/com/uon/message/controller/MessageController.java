@@ -40,7 +40,27 @@ public class MessageController {
 
         return ResponseEntity.ok(message);
     }
+
     // 쪽지 보내기
+    @PostMapping
+    public ResponseEntity<?> regist(@RequestHeader("Authorization") String tokenHeader, @RequestBody Message message) {
+        String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+        message.setSenderId(userId);
+        
+        int result = messageService.sendMessage(message);
+        
+        if(result == 0) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("전송 실패");
+        
+        return ResponseEntity.ok(result);
+    }
 
     // 쪽지 삭제
+    @DeleteMapping("/{messageId}")
+    public ResponseEntity<?> deleteMessage(@RequestHeader("Authorization") String tokenHeader, @PathVariable("messageId") int messageId) {
+        String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+
+        int result = messageService.deleteMessage(messageId);
+
+        return ResponseEntity.ok(result);
+    }
 }

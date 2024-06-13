@@ -34,4 +34,13 @@
             from message
             where message_id = #{messageId};
         </select>
+
+        <insert id="sendMessage" parameterType="message">
+            insert into message(sender_id, receiver_id, title, content)
+            values (#{senderId}, #{receiverId}, #{title}, #{content});
+        </insert>
+
+        <delete id="deleteMessage" parameterType="int">
+            delete from message where message_id = #{messageId};
+        </delete>
 </mapper>
