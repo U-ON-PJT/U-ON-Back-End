@@ -1,6 +1,7 @@
 package com.uon.matching.model.service;
 
 import com.uon.matching.dto.Activity;
+import com.uon.matching.dto.Participant;
 import com.uon.matching.model.mapper.MatchingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -95,6 +96,7 @@ public class MatchingServiceImpl implements MatchingService {
             }
 
             matchingMapper.updateIsDeadline(activityId);
+            matchingMapper.insertParticipant(new Participant(userId, activityId));
             return 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,6 +114,28 @@ public class MatchingServiceImpl implements MatchingService {
             }
 
             matchingMapper.updateIsComplete(activityId);
+            return 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
+    public int insertParticipant(Participant participant) {
+        try {
+            int isContainsMatchingParticipant = matchingMapper.isContainsMatchingParticipant(participant);
+
+            if (isContainsMatchingParticipant == 1) {
+                return -1;
+            }
+
+            Activity activityInfo = matchingMapper.selectMatchingRoom(participant.getActivityId());
+            activityInfo.setCurrentParticipant(activityInfo.getCurrentParticipant() + 1);
+
+            if (matchingMapper.updateMatchingRoom(activityInfo) != 1) return -1;
+            if (matchingMapper.insertParticipant(participant) != 1) return -1;
+
             return 0;
         } catch (Exception e) {
             e.printStackTrace();

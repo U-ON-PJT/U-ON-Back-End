@@ -1,6 +1,7 @@
 package com.uon.matching.model.service;
 
 import com.uon.matching.dto.Activity;
+import com.uon.matching.dto.Participant;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface MatchingService {
     int deleteMatchingRoom(String userId, int activityId);
     int updateIsDeadline(String userId, int activityId);
     int updateIsComplete(String userId, int activityId);
+    int insertParticipant(Participant participant);
 }

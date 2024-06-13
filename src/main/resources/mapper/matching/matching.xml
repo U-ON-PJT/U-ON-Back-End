@@ -66,4 +66,16 @@
         where activity_id=#{activityId};
     </update>
 
+    <select id="isContainsMatchingParticipant" parameterType="participant">
+        select count(*)
+        from participant
+        where activity_id=#{activityId} and user_id=#{userId}
+    </select>
+
+    <insert id="insertParticipant" parameterType="participant">
+        insert into participant
+        (activity_id, user_id)
+        values
+        (#{activityId}, #{userId})
+    </insert>
 </mapper>

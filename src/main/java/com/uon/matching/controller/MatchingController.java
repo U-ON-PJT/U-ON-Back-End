@@ -1,6 +1,7 @@
 package com.uon.matching.controller;
 
 import com.uon.matching.dto.Activity;
+import com.uon.matching.dto.Participant;
 import com.uon.matching.model.service.MatchingService;
 import com.uon.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
@@ -114,5 +115,19 @@ public class MatchingController {
             return ResponseEntity.status(200).body("Success! Update IsComplete");
         }
         return ResponseEntity.status(400).body("Failed! Update IsComplete");
+    }
+
+    @PostMapping("/participants/{activityId}")
+    public ResponseEntity<?> insertParticipant(@PathVariable("activityId") int activityId,
+                                               @RequestHeader("Authorization") String tokenHeader) {
+        String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+        Participant participant = new Participant(userId, activityId);
+
+        int isSuccess = matchingService.insertParticipant(participant);
+
+        if (isSuccess == 0) {
+            return ResponseEntity.status(200).body("Success! Insert Participant in Matching");
+        }
+        return ResponseEntity.status(400).body("Failed! Insert Participant in Matching");
     }
 }
