@@ -96,7 +96,7 @@ public class MatchingServiceImpl implements MatchingService {
             }
 
             matchingMapper.updateIsDeadline(activityId);
-            matchingMapper.insertParticipant(new Participant(userId, activityId));
+            insertParticipant(new Participant(userId, activityId));
             return 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -131,10 +131,34 @@ public class MatchingServiceImpl implements MatchingService {
             }
 
             Activity activityInfo = matchingMapper.selectMatchingRoom(participant.getActivityId());
+            System.out.println(activityInfo.getCurrentParticipant());
+
             activityInfo.setCurrentParticipant(activityInfo.getCurrentParticipant() + 1);
+            System.out.println(activityInfo.getCurrentParticipant());
+            if (matchingMapper.updateMatchingRoom(activityInfo) != 1
+                    || matchingMapper.insertParticipant(participant) != 1) return -1;
+
+            return 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
+    public int deleteParticipant(Participant participant) {
+        try {
+            int isContainsMatchingParticipant = matchingMapper.isContainsMatchingParticipant(participant);
+
+            if (isContainsMatchingParticipant == 0) {
+                return -1;
+            }
+
+            Activity activityInfo = matchingMapper.selectMatchingRoom(participant.getActivityId());
+            activityInfo.setCurrentParticipant(activityInfo.getCurrentParticipant() - 1);
 
             if (matchingMapper.updateMatchingRoom(activityInfo) != 1) return -1;
-            if (matchingMapper.insertParticipant(participant) != 1) return -1;
+            if (matchingMapper.deleteParticipant(participant) != 1) return -1;
 
             return 0;
         } catch (Exception e) {

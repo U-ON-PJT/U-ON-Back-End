@@ -130,4 +130,18 @@ public class MatchingController {
         }
         return ResponseEntity.status(400).body("Failed! Insert Participant in Matching");
     }
+
+    @DeleteMapping("/participants/{activityId}")
+    public ResponseEntity<?> deleteParticipant(@PathVariable("activityId") int activityId,
+                                               @RequestHeader("Authorization") String tokenHeader) {
+        String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+        Participant participant = new Participant(userId, activityId);
+
+        int isSuccess = matchingService.deleteParticipant(participant);
+
+        if (isSuccess == 0) {
+            return ResponseEntity.status(200).body("Success! Delete Participant in Matching");
+        }
+        return ResponseEntity.status(400).body("Failed! Delete Participant in Matching");
+    }
 }

@@ -78,4 +78,9 @@
         values
         (#{activityId}, #{userId})
     </insert>
+
+    <delete id="deleteParticipant" parameterType="participant">
+        delete from participant
+        where activity_id=#{activityId} and user_id=#{userId}
+    </delete>
 </mapper>

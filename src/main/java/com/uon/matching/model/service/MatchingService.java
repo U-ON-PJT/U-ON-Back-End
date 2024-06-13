@@ -15,4 +15,5 @@ public interface MatchingService {
     int updateIsDeadline(String userId, int activityId);
     int updateIsComplete(String userId, int activityId);
     int insertParticipant(Participant participant);
+    int deleteParticipant(Participant participant);
 }
