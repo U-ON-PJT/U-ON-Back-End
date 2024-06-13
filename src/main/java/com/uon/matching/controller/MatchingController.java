@@ -117,6 +117,20 @@ public class MatchingController {
         return ResponseEntity.status(400).body("Failed! Update IsComplete");
     }
 
+    @GetMapping("/participants/{activityId}")
+    public ResponseEntity<?> selectParticipants(@PathVariable("activityId") int activityId,
+                                               @RequestHeader("Authorization") String tokenHeader) {
+        String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+        Participant participant = new Participant(userId, activityId);
+
+        List<Participant> participantsList = matchingService.selectParticipants(participant);
+
+        if (participantsList != null) {
+            return ResponseEntity.status(200).body(participantsList);
+        }
+        return ResponseEntity.status(400).body("Failed! Select Participant in Matching");
+    }
+
     @PostMapping("/participants/{activityId}")
     public ResponseEntity<?> insertParticipant(@PathVariable("activityId") int activityId,
                                                @RequestHeader("Authorization") String tokenHeader) {

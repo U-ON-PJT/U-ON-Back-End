@@ -72,6 +72,14 @@
         where activity_id=#{activityId} and user_id=#{userId}
     </select>
 
+    <select id="selectParticipants" parameterType="int">
+        select p.user_id as userId, p.activity_id as activityId, u.name
+        from `user` u join `participant` p
+        on u.user_id = p.user_id
+        where activity_id = #{activityId};
+
+    </select>
+
     <insert id="insertParticipant" parameterType="participant">
         insert into participant
         (activity_id, user_id)

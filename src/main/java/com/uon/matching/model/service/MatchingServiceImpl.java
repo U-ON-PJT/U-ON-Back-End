@@ -122,6 +122,24 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
+    public List<Participant> selectParticipants(Participant participant) {
+        try {
+            int isContainsMatchingParticipant = matchingMapper.isContainsMatchingParticipant(participant);
+
+            if (isContainsMatchingParticipant == 0) {
+                return null;
+            }
+
+            List<Participant> participantsList = matchingMapper.selectParticipants(participant.getActivityId());
+
+            return participantsList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public int insertParticipant(Participant participant) {
         try {
             int isContainsMatchingParticipant = matchingMapper.isContainsMatchingParticipant(participant);
@@ -131,10 +149,8 @@ public class MatchingServiceImpl implements MatchingService {
             }
 
             Activity activityInfo = matchingMapper.selectMatchingRoom(participant.getActivityId());
-            System.out.println(activityInfo.getCurrentParticipant());
-
             activityInfo.setCurrentParticipant(activityInfo.getCurrentParticipant() + 1);
-            System.out.println(activityInfo.getCurrentParticipant());
+
             if (matchingMapper.updateMatchingRoom(activityInfo) != 1
                     || matchingMapper.insertParticipant(participant) != 1) return -1;
 

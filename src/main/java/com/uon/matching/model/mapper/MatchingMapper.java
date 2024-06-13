@@ -18,6 +18,7 @@ public interface MatchingMapper {
     int updateIsDeadline(int activityId);
     int updateIsComplete(int activityId);
     int isContainsMatchingParticipant(Participant participant);
+    List<Participant> selectParticipants(int activityId);
     int insertParticipant(Participant participant);
     int deleteParticipant(Participant participant);
 }
