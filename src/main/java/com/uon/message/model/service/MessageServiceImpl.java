@@ -34,12 +34,24 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
+    @Transactional
     public int sendMessage(Message message) {
-        return 0;
+        String senderId = message.getSenderId();
+        String receiverId = message.getReceiverId();
+
+        int result = messageMapper.sendMessage(message);
+
+        if(result == 0) return 0;
+
+        message.setSenderId(receiverId);
+        message.setReceiverId(senderId);
+
+        return messageMapper.sendMessage(message);
     }
 
     @Override
     public int deleteMessage(int messageId) {
-        return 0;
+
+        return messageMapper.deleteMessage(messageId);
     }
 }

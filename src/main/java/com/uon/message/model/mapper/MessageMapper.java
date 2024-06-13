@@ -12,6 +12,6 @@ public interface MessageMapper {
     public Message isReceiver(int messageId);
     public int firstRead(int messageId);
     public Message findById(int messageId);
-//    public int sendMessage(Message message);
-//    public int deleteMessage(int messageId);
+    public int sendMessage(Message message);
+    public int deleteMessage(int messageId);
 }
