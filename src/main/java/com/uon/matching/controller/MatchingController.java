@@ -102,4 +102,17 @@ public class MatchingController {
         }
         return ResponseEntity.status(400).body("Failed! Update IsDeadLine");
     }
+
+    @PutMapping("/complete/{activityId}")
+    public ResponseEntity<?> updateIsComplete(@PathVariable("activityId") int activityId,
+                                              @RequestHeader("Authorization") String tokenHeader) {
+        String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+
+        int isSuccess = matchingService.updateIsComplete(userId, activityId);
+
+        if (isSuccess == 0) {
+            return ResponseEntity.status(200).body("Success! Update IsComplete");
+        }
+        return ResponseEntity.status(400).body("Failed! Update IsComplete");
+    }
 }

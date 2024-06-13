@@ -15,4 +15,5 @@ public interface MatchingMapper {
     Activity selectMatchingRoom(int activityId);
     int deleteMatchingRoom(int activityId);
     int updateIsDeadline(int activityId);
+    int updateIsComplete(int activityId);
 }

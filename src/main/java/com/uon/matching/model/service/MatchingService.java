@@ -12,4 +12,5 @@ public interface MatchingService {
     Activity selectMatchingRoom(int activityId);
     int deleteMatchingRoom(String userId, int activityId);
     int updateIsDeadline(String userId, int activityId);
+    int updateIsComplete(String userId, int activityId);
 }

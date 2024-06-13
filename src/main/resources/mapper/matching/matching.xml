@@ -59,4 +59,11 @@
         is_deadline=1
         where activity_id=#{activityId};
     </update>
+
+    <update id="updateIsComplete" parameterType="int">
+        update activity set
+        is_completed=1
+        where activity_id=#{activityId};
+    </update>
+
 </mapper>
