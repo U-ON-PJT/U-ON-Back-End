@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uon.message.model.mapper.MessageMapper">
+        <select id="selectMessage" parameterType="map" resultType="message">
+            <choose>
+                <when test="type == 0">
+                    select message_id, receiver_id, title, send_time, is_read
+                    from message
+                    where sender_id = #{userId};
+                </when>
+                <otherwise>
+                    select message_id, sender_id, title, send_time, is_read
+                    from message
+                    where receiver_id = #{userId};
+                </otherwise>
+            </choose>
+        </select>
+
+        <select id="isReceiver" parameterType="int" resultType="message">
+            select receiver_id, is_read
+            from message
+            where message_id = #{messageId};
+        </select>
+
+        <update id="firstRead" parameterType="int">
+            update message set is_read = 1
+            where message_id = #{messageId};
+        </update>
+
+        <select id="findById" parameterType="int" resultType="message">
+            select message_id, receiver_id, sender_id, title, content, send_time, is_read
+            from message
+            where message_id = #{messageId};
+        </select>
+</mapper>

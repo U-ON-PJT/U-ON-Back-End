@@ -1,4 +1,4 @@
-package com.uon.interceptor;
+package com.uon.config.interceptor;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -27,7 +27,7 @@ public class AuthInterceptor implements HandlerInterceptor{
         log.debug("AuthInterceptor()의 preHandle실행 method:{}", method);
 
         log.debug(requestURI);
-        if(requestURI.startsWith("/uon/users")) return checkToken(request, response);	//GET요청임에도 권한이 필요한 경우
+        if(requestURI.startsWith("/uon/users") || requestURI.startsWith("/uon/messages")) return checkToken(request, response);	//GET요청임에도 권한이 필요한 경우
         if (method.equals("OPTIONS")) return true;	//preflight request 허용
         if(method.equals("GET")) return true;		//조회요청은 권한 필요 없음
 
