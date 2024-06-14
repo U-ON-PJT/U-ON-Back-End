@@ -6,6 +6,8 @@ import com.uon.matching.model.mapper.MatchingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -149,6 +151,15 @@ public class MatchingServiceImpl implements MatchingService {
             }
 
             Activity activityInfo = matchingMapper.selectMatchingRoom(participant.getActivityId());
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date deadline = formatter.parse(activityInfo.getDeadline());
+            Date currentDate = new Date();
+
+            //마감시간 이후 신청 제한
+            if (currentDate.after(deadline)) {
+                return -1;
+            }
             activityInfo.setCurrentParticipant(activityInfo.getCurrentParticipant() + 1);
 
             if (matchingMapper.updateMatchingRoom(activityInfo) != 1
@@ -171,6 +182,16 @@ public class MatchingServiceImpl implements MatchingService {
             }
 
             Activity activityInfo = matchingMapper.selectMatchingRoom(participant.getActivityId());
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date deadline = formatter.parse(activityInfo.getDeadline());
+            Date currentDate = new Date();
+
+            //마감시간 이후 신청 취소 제한
+            if (currentDate.after(deadline)) {
+                return -1;
+            }
+
             activityInfo.setCurrentParticipant(activityInfo.getCurrentParticipant() - 1);
 
             if (matchingMapper.updateMatchingRoom(activityInfo) != 1) return -1;
