@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.uon.config.interceptor.AuthInterceptor;
+import com.uon.interceptor.AuthInterceptor;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer{
     public void addInterceptors(InterceptorRegistry registry) {
         registry
                 .addInterceptor(authInterceptor)
-                .addPathPatterns("/users/**", "/messages/**");
+                .addPathPatterns("/users/**", "/messages/**", "/boards/**", "/activities/**");
     }
 
     @Override

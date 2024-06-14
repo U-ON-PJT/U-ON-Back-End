@@ -23,7 +23,6 @@ public class JWTUtil {
 
     //application.properties에 등록된 변수
     public SecretKey getSecretKey() {
-//    	System.out.println("응애 : " + secretKeyPlain.getBytes());
         return Keys.hmacShaKeyFor(secretKeyPlain.getBytes());
     }
 
@@ -72,31 +71,18 @@ public class JWTUtil {
     }
 
     //토큰으로 부터 role 조회
-    public String getRoleFromToken(String token) {
+    public int getRoleFromToken(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(getSecretKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
 
-        String role = (String) claims.get("role");
+        int role = (int) claims.get("role");
         log.debug("claim role:{}",role);
         return role;
     }
 
-    /*
-    //토큰으로 부터 birth 조회
-    public String getbirthFromToken(String token) {
-        Claims claims = Jwts.parser()
-                .verifyWith(getSecretKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-
-        String birth = (String) claims.get("birth");
-        log.debug("claim id:{}",birth);
-        return birth;
-    }*/
 }
 
 

@@ -1,6 +1,7 @@
 package com.uon.message.controller;
 
 import com.uon.message.dto.Message;
+import com.uon.message.dto.MessagePaginationResponse;
 import com.uon.message.model.service.MessageService;
 import com.uon.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +22,15 @@ public class MessageController {
 
     // 쪽지 조회 (받은, 보낸 쪽지함 list)
     @GetMapping("/{type}")
-    public ResponseEntity<?> selectAll(@RequestHeader("Authorization") String tokenHeader, @PathVariable("type") int type) {
+    public ResponseEntity<?> selectAll(@RequestHeader("Authorization") String tokenHeader,
+                                       @PathVariable("type") int type,
+                                       @RequestParam(value = "size", defaultValue = "10") int size,
+                                       @RequestParam(value = "page", defaultValue = "1") int page) {
         String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
 
+        MessagePaginationResponse resp = messageService.selectMessage(userId, type, size, page);
 
-        List<Message> messages = messageService.selectMessage(userId, type);
-
-        return ResponseEntity.ok(messages);
+        return ResponseEntity.ok(resp);
     }
 
     // 쪽지 상세 조회 (받은 쪽지함에서, 처음 읽었을 땐 읽음 처리 하기)

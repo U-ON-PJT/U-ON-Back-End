@@ -2,13 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.uon.board.model.mapper.BoardMapper">
-    <select id="getBoard" resultType="board">
+    <select id="getBoard" parameterType="int" resultType="board">
         select board_id, user_id, title, content, create_time
         from board
         where type=#{type}
     </select>
-    <select id="getBoardImages" parameterType="int">
-        select save_name, image_name, image_path
+
+    <select id="getBoardImages" parameterType="int" resultType="boardImage">
+        select image_url
         from board_image
         where board_id = #{boardId}
     </select>
@@ -26,11 +27,18 @@
              (#{userId}, #{type}, #{title}, #{content})
     </insert>
 
-    <insert id="insert" parameterType="boardImage">
-        insert into boardImage
-            (user_id, type, title, content)
-        values
-            (#{userId}, #{type}, #{title}, #{content})
+    <insert id="insertImages" parameterType="list">
+        insert into board_image
+            (board_id, image_url) values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.boardId},
+            #{item.imageUrl}
+            )
+        </foreach>
+    </insert>
+    <insert id="">
+
     </insert>
 
     <select id="getBoardId" resultType="int">
@@ -40,6 +48,19 @@
 
     <update id="update" parameterType="board">
         update board
-        set
+        set type=#{type}, title=#{title}, content=#{content}
+        where board_id=#{boardId}
     </update>
+
+    <delete id="delete">
+        delete from board
+        where board_id=#{boardId}
+    </delete>
+
+    <delete id="deleteImages">
+        delete from board_image
+        where board_id=#{boardId}
+    </delete>
+
+
 </mapper>
