@@ -30,8 +30,9 @@ public class BoardServiceImpl implements BoardService{
         List<BoardImage> boardImages = new ArrayList<>();
         for(String imageUrl : images) {
             BoardImage boardImage = new BoardImage();
-            boardImage.setBoardId(1);
+            boardImage.setBoardId(boardId);
             boardImage.setImageUrl(imageUrl);
+            boardImages.add(boardImage);
         }
 
         boardMapper.insertImages(boardImages);
