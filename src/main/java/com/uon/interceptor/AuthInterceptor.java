@@ -37,7 +37,6 @@ public class AuthInterceptor implements HandlerInterceptor{
     private boolean checkToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String requestURI = request.getRequestURI();
 
-//        System.out.println("걸렸으" + requestURI);
         if(requestURI.startsWith("/uon/users/exist") || requestURI.startsWith("/uon/users/sign-up") || requestURI.startsWith("/uon/users/login") || requestURI.startsWith("/uon/users/user-id")) return true;
 
         String tokenHeader = request.getHeader("Authorization");	//Header에서 토큰 정보 추출
@@ -48,6 +47,7 @@ public class AuthInterceptor implements HandlerInterceptor{
             response.getWriter().write("Unauthorized");
             return false;
         }
+
         //토큰이 유효하지 않은 경우
         String token = tokenHeader.substring(7);
         if(!jwtUtil.isValid(token) ) {
