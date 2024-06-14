@@ -12,5 +12,4 @@ public class Board {
     private String title;
     private String content;
     private String createTime;
-    private List<BoardImage> boardImages;
 }
