@@ -50,8 +50,7 @@ public class UserServiceImpl implements UserService {
         String password = user.getPassword();
 
         User userInfo = userMapper.login(id);
-//		System.out.println(user);
-//		System.out.println("비번1234암호화:"+passwordEncoder.encode(password));
+
         if(userInfo==null || !passwordEncoder.matches(password, userInfo.getPassword()) ) return null;
 
         int exp = userInfo.getExperience();
@@ -88,9 +87,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public int updateUser(User user) {
-//        String password = userMapper.getPassword(user.getUserId());
-//        System.out.println(password);
-//        if(password == null || !passwordEncoder.matches(user.getPassword(), password)) return 0;
 
         Map<String, String> param = new HashMap<>();
         param.put("sidoName", user.getSidoName());
@@ -99,9 +95,6 @@ public class UserServiceImpl implements UserService {
         user.setDongCode(userMapper.findByName(param));
 
         if(user.getDongCode() == null) return 0;
-
-//        String encodedPassword = passwordEncoder.encode(user.getNewPassword());
-//        user.setNewPassword(encodedPassword);
 
         return userMapper.updateUser(user);
     }
