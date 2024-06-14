@@ -9,6 +9,7 @@ import java.util.List;
 @Mapper
 public interface BoardMapper {
     int insert (Board board);
+
     int insertImages(List<BoardImage> boardImageList);
     int getBoardId();
 
@@ -16,10 +17,10 @@ public interface BoardMapper {
     List<BoardImage> getBoardImages(int boardId);
     Board getBoardById(int boardId);
 
-    int update(Board board);
-    int deleteImages(int boardId);
-    int updateImages(List<BoardImage> boardImageList);
-
+//    int update(Board board);
+//    int deleteImages(int boardId);
+//    int updateImages(List<BoardImage> boardImageList);
+//
     int delete(int boardId);
 
 }
