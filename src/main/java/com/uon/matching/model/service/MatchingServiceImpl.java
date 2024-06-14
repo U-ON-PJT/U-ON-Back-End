@@ -4,6 +4,7 @@ import com.uon.matching.dto.Activity;
 import com.uon.matching.dto.Participant;
 import com.uon.matching.model.mapper.MatchingMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MatchingServiceImpl implements MatchingService {
 
     private final MatchingMapper matchingMapper;
@@ -22,6 +24,7 @@ public class MatchingServiceImpl implements MatchingService {
             int isSuccess = matchingMapper.insertMatchingRoom(activity);
             return isSuccess;
         } catch (Exception e) {
+            log.error("매칭방을 생성하는 도중 문제가 발생함");
             e.printStackTrace();
             return -1;
         }
@@ -33,6 +36,7 @@ public class MatchingServiceImpl implements MatchingService {
             int isSuccess = matchingMapper.updateMatchingRoom(activity);
             return isSuccess;
         } catch (Exception e) {
+            log.error("매칭방을 수정하는 도중 문제가 발생함");
             e.printStackTrace();
             return -1;
         }
@@ -44,6 +48,7 @@ public class MatchingServiceImpl implements MatchingService {
             List<Activity> activityList = matchingMapper.selectAllMatchingRoom();
             return activityList;
         } catch (Exception e) {
+            log.error("매칭방을 조회하는 도중 문제가 발생함");
             e.printStackTrace();
             return null;
         }
@@ -55,6 +60,7 @@ public class MatchingServiceImpl implements MatchingService {
             List<Activity> activityListOfType = matchingMapper.selectMatchingRoomOfType(type);
             return activityListOfType;
         } catch (Exception e) {
+            log.error("매칭방을 타입 별로 조회하는 도중 문제가 발생함");
             e.printStackTrace();
             return null;
         }
@@ -66,6 +72,7 @@ public class MatchingServiceImpl implements MatchingService {
             Activity activityInfo = matchingMapper.selectMatchingRoom(activityId);
             return activityInfo;
         } catch (Exception e) {
+            log.error("매칭방을 상세 조회하는 도중 문제가 발생함");
             e.printStackTrace();
             return null;
         }
@@ -77,12 +84,14 @@ public class MatchingServiceImpl implements MatchingService {
             Activity activityInfo = matchingMapper.selectMatchingRoom(activityId);
 
             if (!userId.equals(activityInfo.getUserId())) {
+                log.error(userId + "는 매칭을 올린 글쓴이가 아님");
                 return -1;
             }
 
             matchingMapper.deleteMatchingRoom(activityId);
             return 0;
         } catch (Exception e) {
+            log.error("매칭방을 삭제하는 도중 문제가 발생함");
             e.printStackTrace();
             return -1;
         }
@@ -94,6 +103,7 @@ public class MatchingServiceImpl implements MatchingService {
             Activity activityInfo = matchingMapper.selectMatchingRoom(activityId);
 
             if (!userId.equals(activityInfo.getUserId())) {
+                log.error(userId + "는 매칭을 올린 글쓴이가 아님");
                 return -1;
             }
 
@@ -101,6 +111,7 @@ public class MatchingServiceImpl implements MatchingService {
             insertParticipant(new Participant(userId, activityId));
             return 0;
         } catch (Exception e) {
+            log.error("매칭 마감을 하는 도중 문제가 발생함");
             e.printStackTrace();
             return -1;
         }
@@ -112,12 +123,14 @@ public class MatchingServiceImpl implements MatchingService {
             Activity activityInfo = matchingMapper.selectMatchingRoom(activityId);
 
             if (!userId.equals(activityInfo.getUserId())) {
+                log.error(userId + "는 매칭을 올린 글쓴이가 아님");
                 return -1;
             }
 
             matchingMapper.updateIsComplete(activityId);
             return 0;
         } catch (Exception e) {
+            log.error("활동을 완료하는 도중 문제가 발생함");
             e.printStackTrace();
             return -1;
         }
@@ -129,6 +142,7 @@ public class MatchingServiceImpl implements MatchingService {
             int isContainsMatchingParticipant = matchingMapper.isContainsMatchingParticipant(participant);
 
             if (isContainsMatchingParticipant == 0) {
+                log.error(participant.getUserId() + "는 매칭을 신청을 하지 않았음");
                 return null;
             }
 
@@ -136,6 +150,7 @@ public class MatchingServiceImpl implements MatchingService {
 
             return participantsList;
         } catch (Exception e) {
+            log.error("참가자들을 조회하는 도중 문제가 발생함");
             e.printStackTrace();
             return null;
         }
@@ -147,6 +162,7 @@ public class MatchingServiceImpl implements MatchingService {
             int isContainsMatchingParticipant = matchingMapper.isContainsMatchingParticipant(participant);
 
             if (isContainsMatchingParticipant == 1) {
+                log.error(participant.getUserId() + "는 매칭을 이미 신청하였음");
                 return -1;
             }
 
@@ -158,15 +174,23 @@ public class MatchingServiceImpl implements MatchingService {
 
             //마감시간 이후 신청 제한
             if (currentDate.after(deadline)) {
+                log.error("마감시간 이후 신청 불가");
                 return -1;
             }
             activityInfo.setCurrentParticipant(activityInfo.getCurrentParticipant() + 1);
 
-            if (matchingMapper.updateMatchingRoom(activityInfo) != 1
-                    || matchingMapper.insertParticipant(participant) != 1) return -1;
+            if (matchingMapper.updateMatchingRoom(activityInfo) != 1) {
+                log.error("현재 활동 인원을 +1 하는 과정에서 문제 발생");
+                return -1;
+            }
+            if (matchingMapper.insertParticipant(participant) != 1) {
+                log.error("참가자 테이블에 참가자를 추가하는 과정에서 문제 발생");
+                return -1;
+            }
 
             return 0;
         } catch (Exception e) {
+            log.error("매칭 신청을 하는 도중 문제가 발생함");
             e.printStackTrace();
             return -1;
         }
@@ -178,6 +202,7 @@ public class MatchingServiceImpl implements MatchingService {
             int isContainsMatchingParticipant = matchingMapper.isContainsMatchingParticipant(participant);
 
             if (isContainsMatchingParticipant == 0) {
+                log.error(participant.getUserId() + "는 매칭을 신청을 하지 않았음");
                 return -1;
             }
 
@@ -189,16 +214,24 @@ public class MatchingServiceImpl implements MatchingService {
 
             //마감시간 이후 신청 취소 제한
             if (currentDate.after(deadline)) {
+                log.error("마감시간 이후 신청 취소 불가");
                 return -1;
             }
 
             activityInfo.setCurrentParticipant(activityInfo.getCurrentParticipant() - 1);
 
-            if (matchingMapper.updateMatchingRoom(activityInfo) != 1) return -1;
-            if (matchingMapper.deleteParticipant(participant) != 1) return -1;
+            if (matchingMapper.updateMatchingRoom(activityInfo) != 1) {
+                log.error("현재 활동 인원을 -1 하는 과정에서 문제 발생");
+                return -1;
+            }
+            if (matchingMapper.deleteParticipant(participant) != 1) {
+                log.error("참가자 테이블에 참가자를 삭제하는 과정에서 문제 발생");
+                return -1;
+            }
 
             return 0;
         } catch (Exception e) {
+            log.error("매칭신청을 취소하는 도중 문제가 발생함");
             e.printStackTrace();
             return -1;
         }
