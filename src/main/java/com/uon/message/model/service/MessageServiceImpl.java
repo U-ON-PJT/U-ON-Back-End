@@ -1,6 +1,7 @@
 package com.uon.message.model.service;
 
 import com.uon.message.dto.Message;
+import com.uon.message.dto.MessagePaginationResponse;
 import com.uon.message.model.mapper.MessageMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,27 @@ import java.util.Map;
 public class MessageServiceImpl implements MessageService{
     private final MessageMapper messageMapper;
     @Override
-    public List<Message> selectMessage(String userId, int type) {
+    @Transactional
+    public MessagePaginationResponse selectMessage(String userId, int type, int size, int page) {
         Map<String, Object> param = new HashMap<>();
         param.put("userId", userId);
         param.put("type", type);
+        param.put("size", size);
+        param.put("offset", (page-1)*size);
 
-        return messageMapper.selectMessage(param);
+        List<Message> messages = messageMapper.selectMessage(param);
+
+        MessagePaginationResponse resp = new MessagePaginationResponse();
+        resp.setMessageList(messages);
+        int totalRow = messageMapper.totalRow(param);
+        int totalPages = ((totalRow-1)/size)+1;
+        resp.setTotalPages(totalPages);
+        resp.setSize(size);
+        resp.setPage(page);
+
+        if(type == 1) resp.setCount(messageMapper.isReadCount(param));
+
+        return resp;
     }
 
     @Override
