@@ -14,8 +14,8 @@
     </insert>
 
     <update id="updateMatchingRoom" parameterType="activity">
-        update activity set activity_address=#{activityAddress}, activity_date=#{activityDate}, title=#{title}, content=#{content},
-        create_time=now(), current_participant=#{currentParticipant}, dong_code=#{dongCode}, is_completed=#{isCompleted},
+        update activity set activity_address=#{activityAddress}, title=#{title}, content=#{content},
+        current_participant=#{currentParticipant}, dong_code=#{dongCode}, is_completed=#{isCompleted},
         is_deadline=#{isDeadline}, max_participant=#{maxParticipant}, min_participant=#{minParticipant}, type=#{type}
         where activity_id=#{activityId};
     </update>
