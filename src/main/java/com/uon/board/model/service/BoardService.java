@@ -1,6 +1,7 @@
 package com.uon.board.model.service;
 
 import com.uon.board.dto.Board;
+import com.uon.board.dto.BoardPaginationResponse;
 import com.uon.board.dto.BoardRequest;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public interface BoardService {
     int insert(BoardRequest board);
-    List<Board> getBoard(int type);
+    BoardPaginationResponse getBoard(int type, int size, int page);
 
     BoardRequest getBoardById(int boardId);
 
