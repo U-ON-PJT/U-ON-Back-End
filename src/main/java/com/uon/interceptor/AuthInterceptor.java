@@ -1,4 +1,4 @@
-package com.uon.config.interceptor;
+package com.uon.interceptor;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
