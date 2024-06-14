@@ -52,7 +52,6 @@ public class UserController {
     @DeleteMapping
     public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") String tokenHeader) {
         String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
-//        if(!id.equals(userId)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근입니다.");
 
         int result = userService.deleteUser(userId);
 

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uon.matching.model.mapper.MatchingMapper">
+
+    <insert id="insertMatchingRoom" parameterType="activity">
+        insert into activity
+        (user_id, title, content, activity_address, activity_date, current_participant, max_participant,
+        min_participant, dong_code, is_completed, is_deadline, type, create_time)
+        values
+        (#{userId}, #{title}, #{content}, #{activityAddress}, #{activityDate}, #{currentParticipant}, #{maxParticipant},
+        #{minParticipant}, #{dongCode}, #{isCompleted}, #{isDeadline}, #{type}, now())
+    </insert>
+
+    <update id="updateMatchingRoom" parameterType="activity">
+        update activity set activity_address=#{activityAddress}, title=#{title}, content=#{content},
+        current_participant=#{currentParticipant}, dong_code=#{dongCode}, is_completed=#{isCompleted},
+        is_deadline=#{isDeadline}, max_participant=#{maxParticipant}, min_participant=#{minParticipant}, type=#{type}
+        where activity_id=#{activityId};
+    </update>
+    
+    <select id="selectAllMatchingRoom" resultType="activity">
+        select
+        activity_id as activityId, activity_address as activityAddress, activity_date as activityDate, content,
+        date_add(activity_date, interval -1 hour) as deadline, create_time as createTime, current_participant as currentParticipant, dong_code as dongCode,
+        is_completed as isCompleted, is_deadline as isDeadline, max_participant as maxParticipant,
+        min_participant as minParticipant, title, type, user_id as userId
+        from activity
+    </select>
+
+    <select id="selectMatchingRoomOfType" parameterType="int" resultType="activity">
+        select
+        activity_id as activityId, activity_address as activityAddress, activity_date as activityDate, content,
+        date_add(activity_date, interval -1 hour) as deadline, create_time as createTime, current_participant as currentParticipant, dong_code as dongCode,
+        is_completed as isCompleted, is_deadline as isDeadline, max_participant as maxParticipant,
+        min_participant as minParticipant, title, type, user_id as userId
+        from activity
+        where type=#{type}
+    </select>
+
+    <select id="selectMatchingRoom" parameterType="int" resultType="activity">
+        select
+        activity_id as activityId, activity_address as activityAddress, activity_date as activityDate, content,
+        date_add(activity_date, interval -1 hour) as deadline, create_time as createTime, current_participant as currentParticipant, dong_code as dongCode,
+        is_completed as isCompleted, is_deadline as isDeadline, max_participant as maxParticipant,
+        min_participant as minParticipant, title, type, user_id as userId
+        from activity
+        where activity_id=#{activityId}
+    </select>
+
+    <delete id="deleteMatchingRoom" parameterType="int">
+        delete from activity
+        where activity_id=#{activityId}
+    </delete>
+
+    <update id="updateIsDeadline" parameterType="int">
+        update activity set
+        is_deadline=1
+        where activity_id=#{activityId}
+    </update>
+
+    <update id="updateIsComplete" parameterType="int">
+        update activity set
+        is_completed=1
+        where activity_id=#{activityId};
+    </update>
+
+    <select id="isContainsMatchingParticipant" parameterType="participant">
+        select count(*)
+        from participant
+        where activity_id=#{activityId} and user_id=#{userId}
+    </select>
+
+    <select id="selectParticipants" parameterType="int">
+        select p.user_id as userId, p.activity_id as activityId, u.name
+        from `user` u join `participant` p
+        on u.user_id = p.user_id
+        where activity_id = #{activityId}
+
+    </select>
+
+    <insert id="insertParticipant" parameterType="participant">
+        insert into participant
+        (activity_id, user_id)
+        values
+        (#{activityId}, #{userId})
+    </insert>
+
+    <delete id="deleteParticipant" parameterType="participant">
+        delete from participant
+        where activity_id=#{activityId} and user_id=#{userId}
+    </delete>
+</mapper>

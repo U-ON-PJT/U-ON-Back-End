@@ -70,25 +70,4 @@
 		and phone = #{phone}
 		and birth = #{birth}
 	</select>
-
-
-<!--	<select id="getInterestArea" parameterType="string" resultType="dongCode">-->
-<!--		select id, dongCode-->
-<!--		from interest_area-->
-<!--		where user_id=#{userId}-->
-<!--	</select>-->
-<!--	-->
-<!--	-->
-<!--	-->
-<!--	-->
-<!--	<insert id="insertDongCode" parameterType="dongCode">-->
-<!--		insert into interest_area(user_id, dongCode)-->
-<!--		values(#{userId}, #{dongCode})-->
-<!--	</insert>-->
-<!--	-->
-<!--	<delete id="deleteDongCode" parameterType="dongCode">-->
-<!--		delete from interest_area-->
-<!--		where id = #{id}-->
-<!--		and user_id = #{userId}-->
-<!--	</delete>-->
 </mapper>
