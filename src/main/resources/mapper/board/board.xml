@@ -46,13 +46,21 @@
         from board
     </select>
 
- <!--   <update id="update" parameterType="board">
+    <update id="update" parameterType="board">
         update board
-        set b
-    </update>-->
+        set type=#{type}, title=#{title}, content=#{content}
+        where board_id=#{boardId}
+    </update>
 
     <delete id="delete">
         delete from board
         where board_id=#{boardId}
     </delete>
+
+    <delete id="deleteImages">
+        delete from board_image
+        where board_id=#{boardId}
+    </delete>
+
+
 </mapper>

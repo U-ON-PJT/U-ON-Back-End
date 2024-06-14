@@ -17,10 +17,9 @@ public interface BoardMapper {
     List<BoardImage> getBoardImages(int boardId);
     Board getBoardById(int boardId);
 
-//    int update(Board board);
-//    int deleteImages(int boardId);
-//    int updateImages(List<BoardImage> boardImageList);
-//
+    int update(Board board);
+    int deleteImages(int boardId);
+
     int delete(int boardId);
 
 }
