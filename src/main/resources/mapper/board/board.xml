@@ -27,16 +27,16 @@
              (#{userId}, #{type}, #{title}, #{content})
     </insert>
 
-<!--    <insert id="insertImages" parameterType="list">-->
-<!--        insert into board_image-->
-<!--            (board_id, image_url) values-->
-<!--        <foreach collection="list" item="item" separator=",">-->
-<!--            (-->
-<!--            #{item.boardId},-->
-<!--            #{item.imageUrl}-->
-<!--            )-->
-<!--        </foreach>-->
-<!--    </insert>-->
+    <insert id="insertImages" parameterType="list">
+        insert into board_image
+            (board_id, image_url) values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.boardId},
+            #{item.imageUrl}
+            )
+        </foreach>
+    </insert>
     <insert id="">
 
     </insert>
