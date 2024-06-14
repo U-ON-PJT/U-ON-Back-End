@@ -8,14 +8,30 @@
                 <when test="type == 0">
                     select message_id, receiver_id, title, send_time, is_read
                     from message
-                    where sender_id = #{userId};
+                    where sender_id = #{userId}
+                    order by message_id DESC
+                    limit #{size} offset #{offset};
                 </when>
                 <otherwise>
                     select message_id, sender_id, title, send_time, is_read
                     from message
-                    where receiver_id = #{userId};
+                    where receiver_id = #{userId}
+                    order by message_id DESC
+                    limit #{size} offset #{offset};
                 </otherwise>
             </choose>
+        </select>
+
+        <select id="totalRow" parameterType="map" resultType="int">
+            select count(*)
+            from message
+        </select>
+
+        <select id="isReadCount" parameterType="map" resultType="int">
+            select count(message_id)
+            from message
+            where receiver_id = #{userId}
+            and is_read = 0;
         </select>
 
         <select id="isReceiver" parameterType="int" resultType="message">
