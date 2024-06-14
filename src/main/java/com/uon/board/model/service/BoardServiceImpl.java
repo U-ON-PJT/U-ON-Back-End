@@ -64,5 +64,26 @@ public class BoardServiceImpl implements BoardService{
         return boardMapper.delete(boardId);
     }
 
+    @Override
+    public int update(BoardRequest boardInfo) {
+        Board board = boardInfo.getBoard();
+
+        int cnt = boardMapper.update(board);
+        int boardId = boardInfo.getBoard().getBoardId();
+
+        List<String> images = boardInfo.getImageUrls();
+
+        List<BoardImage> boardImages = new ArrayList<>();
+        for(String imageUrl : images) {
+            BoardImage boardImage = new BoardImage();
+            boardImage.setBoardId(1);
+            boardImage.setImageUrl(imageUrl);
+        }
+
+        boardMapper.insertImages(boardImages);
+
+        return cnt;
+    }
+
 
 }

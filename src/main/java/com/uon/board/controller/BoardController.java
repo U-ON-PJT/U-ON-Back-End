@@ -45,5 +45,12 @@ public class BoardController {
         return ResponseEntity.ok(cnt);
     }
 
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody BoardRequest boardRequest) {
+        int result = boardService.update(boardRequest);
+
+        return ResponseEntity.ok(result);
+    }
+
 
 }

@@ -46,10 +46,10 @@
         from board
     </select>
 
- <!--   <update id="update" parameterType="board">
+    <update id="update" parameterType="board">
         update board
         set b
-    </update>-->
+    </update>
 
     <delete id="delete">
         delete from board
