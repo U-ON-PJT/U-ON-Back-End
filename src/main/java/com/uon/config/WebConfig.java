@@ -21,13 +21,13 @@ public class WebConfig implements WebMvcConfigurer{
     public void addInterceptors(InterceptorRegistry registry) {
         registry
                 .addInterceptor(authInterceptor)
-                .addPathPatterns("/users/**");
+                .addPathPatterns("/users/**", "/messages/**", "/boards/**", "/activities/**");
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173", "http://192.168.206.40:5173")
+                .allowedOrigins("http://localhost:5173", "http://192.168.206.40:5173", "http://localhost:3000")
                 .allowedMethods("GET","POST","PUT","DELETE","PATCH","OPTIONS");
     }
 

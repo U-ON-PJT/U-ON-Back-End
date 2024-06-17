@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uon.board.model.mapper.BoardMapper">
+    <select id="getBoard" parameterType="map" resultType="board">
+        select board_id, user_id, title, content, create_time
+        from board
+        where type=#{type}
+        order by board_id desc
+        limit #{size} offset #{offset};
+    </select>
+
+    <select id="totalRow" parameterType="map" resultType="int">
+        select count(*)
+        from message
+    </select>
+
+    <select id="getBoardImages" parameterType="int" resultType="boardImage">
+        select image_url
+        from board_image
+        where board_id = #{boardId}
+    </select>
+
+    <select id="getBoardById" parameterType="int" resultType="board">
+        select user_id, type, title, content, create_time
+        from  board
+        where board_id = #{boardId}
+    </select>
+
+    <insert id="insert" parameterType="board">
+        insert into board
+            (user_id, type, title, content)
+         values
+             (#{userId}, #{type}, #{title}, #{content})
+    </insert>
+
+    <insert id="insertImages" parameterType="list">
+        insert into board_image
+            (board_id, image_url) values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.boardId},
+            #{item.imageUrl}
+            )
+        </foreach>
+    </insert>
+    <insert id="">
+
+    </insert>
+
+    <select id="getBoardId" resultType="int">
+        select MAX(board_id)
+        from board
+    </select>
+
+    <update id="update" parameterType="board">
+        update board
+        set type=#{type}, title=#{title}, content=#{content}
+        where board_id=#{boardId}
+    </update>
+
+    <delete id="delete">
+        delete from board
+        where board_id=#{boardId}
+    </delete>
+
+    <delete id="deleteImages">
+        delete from board_image
+        where board_id=#{boardId}
+    </delete>
+
+
+</mapper>
