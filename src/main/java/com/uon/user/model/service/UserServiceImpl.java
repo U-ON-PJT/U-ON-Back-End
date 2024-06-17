@@ -61,7 +61,6 @@ public class UserServiceImpl implements UserService {
         else if (exp >= 1000) userInfo.setLevel(2);
         else userInfo.setLevel(1);
 
-        System.out.println(userInfo);
         return jwtUtil.generateToken(userInfo);
     }
 
