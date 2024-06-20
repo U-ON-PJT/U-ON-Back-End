@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
         user.setDongCode(userMapper.findByName(param));
 
-        if(user.getDongCode().equals(null)) return 0;
+        if(user.getDongCode() == null) return 0;
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
