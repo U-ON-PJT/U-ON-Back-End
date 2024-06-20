@@ -5,14 +5,15 @@ import com.uon.matching.dto.Participant;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MatchingMapper {
 
     int insertMatchingRoom(Activity activity);
     int updateMatchingRoom(Activity activity);
-    List<Activity> selectAllMatchingRoom();
-    List<Activity> selectMatchingRoomOfType(int type);
+    List<Activity> selectAllMatchingRoom(Map<String, Object> paramMap);
+    List<Activity> selectMatchingRoomOfType(Map<String, Object> paramMap);
     Activity selectMatchingRoom(int activityId);
     int deleteMatchingRoom(int activityId);
     int updateIsDeadline(int activityId);
