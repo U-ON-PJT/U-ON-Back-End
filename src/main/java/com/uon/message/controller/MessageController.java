@@ -51,8 +51,10 @@ public class MessageController {
         message.setSenderId(userId);
         
         int result = messageService.sendMessage(message);
-        
-        if(result == 0) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("전송 실패");
+
+        System.out.println(result);
+
+        if(result == 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("전송 실패");
         
         return ResponseEntity.ok(result);
     }
