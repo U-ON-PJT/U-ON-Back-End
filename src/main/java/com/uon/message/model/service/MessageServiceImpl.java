@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,8 +52,15 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    @Transactional
-    public int sendMessage(Message message) { return messageMapper.sendMessage(message); }
+    public int sendMessage(Message message) {
+        try {
+            return messageMapper.sendMessage(message);
+        }
+        catch (Exception e) {
+            System.err.println("Foreign key constraint violation: " + e.getMessage());
+            return 0;
+        }
+    }
 
     @Override
     public int deleteMessage(int messageId, String userId) {
