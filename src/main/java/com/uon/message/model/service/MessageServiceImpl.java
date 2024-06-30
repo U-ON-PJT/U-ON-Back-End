@@ -1,11 +1,14 @@
 package com.uon.message.model.service;
 
 import com.uon.message.dto.Message;
+import com.uon.message.dto.MessagePaginationResponse;
 import com.uon.message.model.mapper.MessageMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,12 +18,27 @@ import java.util.Map;
 public class MessageServiceImpl implements MessageService{
     private final MessageMapper messageMapper;
     @Override
-    public List<Message> selectMessage(String userId, int type) {
+    @Transactional
+    public MessagePaginationResponse selectMessage(String userId, int type, int size, int page) {
         Map<String, Object> param = new HashMap<>();
         param.put("userId", userId);
         param.put("type", type);
+        param.put("size", size);
+        param.put("offset", (page-1)*size);
 
-        return messageMapper.selectMessage(param);
+        List<Message> messages = messageMapper.selectMessage(param);
+
+        MessagePaginationResponse resp = new MessagePaginationResponse();
+        resp.setMessageList(messages);
+        int totalRow = messageMapper.totalRow(param);
+        int totalPages = ((totalRow-1)/size)+1;
+        resp.setTotalPages(totalPages);
+        resp.setSize(size);
+        resp.setPage(page);
+
+        if(type == 1) resp.setCount(messageMapper.isReadCount(param));
+
+        return resp;
     }
 
     @Override
@@ -34,24 +52,26 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    @Transactional
     public int sendMessage(Message message) {
-        String senderId = message.getSenderId();
-        String receiverId = message.getReceiverId();
-
-        int result = messageMapper.sendMessage(message);
-
-        if(result == 0) return 0;
-
-        message.setSenderId(receiverId);
-        message.setReceiverId(senderId);
-
-        return messageMapper.sendMessage(message);
+        try {
+            return messageMapper.sendMessage(message);
+        }
+        catch (Exception e) {
+            System.err.println("Foreign key constraint violation: " + e.getMessage());
+            return 0;
+        }
     }
 
     @Override
-    public int deleteMessage(int messageId) {
+    public int deleteMessage(int messageId, String userId) {
+        Message message = messageMapper.findById(messageId);
 
-        return messageMapper.deleteMessage(messageId);
+        if(message.getIsDelete() != 0) return messageMapper.deleteMessage(messageId);
+
+        if(message.getSenderId().equals(userId)) return messageMapper.senderDelete(messageId);
+        else if(message.getReceiverId().equals(userId)) return messageMapper.receiverDelete(messageId);
+
+        return 0;
+
     }
 }

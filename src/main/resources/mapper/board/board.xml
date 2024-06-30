@@ -2,10 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.uon.board.model.mapper.BoardMapper">
-    <select id="getBoard" parameterType="int" resultType="board">
+    <select id="getBoard" parameterType="map" resultType="board">
         select board_id, user_id, title, content, create_time
         from board
         where type=#{type}
+        order by board_id desc
+        limit #{size} offset #{offset};
+    </select>
+
+    <select id="totalRow" parameterType="map" resultType="int">
+        select count(*)
+        from message
     </select>
 
     <select id="getBoardImages" parameterType="int" resultType="boardImage">
@@ -46,13 +53,21 @@
         from board
     </select>
 
- <!--   <update id="update" parameterType="board">
+    <update id="update" parameterType="board">
         update board
-        set b
-    </update>-->
+        set type=#{type}, title=#{title}, content=#{content}
+        where board_id=#{boardId}
+    </update>
 
     <delete id="delete">
         delete from board
         where board_id=#{boardId}
     </delete>
+
+    <delete id="deleteImages">
+        delete from board_image
+        where board_id=#{boardId}
+    </delete>
+
+
 </mapper>

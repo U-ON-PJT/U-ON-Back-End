@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
         user.setDongCode(userMapper.findByName(param));
 
-        if(user.getDongCode().equals(null)) return 0;
+        if(user.getDongCode() == null) return 0;
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -61,7 +61,6 @@ public class UserServiceImpl implements UserService {
         else if (exp >= 1000) userInfo.setLevel(2);
         else userInfo.setLevel(1);
 
-        System.out.println(userInfo);
         return jwtUtil.generateToken(userInfo);
     }
 

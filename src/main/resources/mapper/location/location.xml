@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uon.location.model.mapper.LocationMapper">
+	<select id="getGugun" parameterType="string" resultType="Location">
+		select distinct gugun_name
+		from dong_code
+		where sido_name = #{sidoName} and gugun_name is not null;
+	</select>
+
+	<select id="getDongCode" parameterType="string" resultType="string">
+		select left(dong_code, 5)
+		from dong_code
+		where sido_name = #{sidoName} and gugun_name = #{gugunName} and dong_name is null;
+	</select>
+
+	<select id="getLocation" parameterType="string" resultType="Location">
+		select sido_name, gugun_name
+		from dong_code
+		where dong_code=#{dongCode};
+	</select>
+
+</mapper>
