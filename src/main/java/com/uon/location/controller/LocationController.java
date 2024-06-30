@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -27,5 +28,23 @@ public class LocationController {
         System.out.println(list);
 
         return ResponseEntity.status(200).body(list);
+    }
+
+    @GetMapping("/dongCodes")
+    public ResponseEntity<?> getDongCode(String sidoName, String gugunName){
+//        System.out.println("sidoName: " + sidoName);
+//        System.out.println("gugunName: " + gugunName);
+        String dongCode= locationService.getDongCode(sidoName, gugunName);
+        System.out.println(dongCode);
+
+        return ResponseEntity.status(200).body(dongCode);
+    }
+
+    @GetMapping("/names/{dongCode}")
+    public ResponseEntity<?> getLocation(@PathVariable("dongCode") String dongCode){
+        Location location = locationService.getLocation(dongCode);
+        System.out.println(location);
+
+        return ResponseEntity.status(200).body(location);
     }
 }

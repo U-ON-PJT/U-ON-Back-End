@@ -19,4 +19,14 @@ public class LocationServiceImpl implements LocationService{
     public List<Location> getGugun(String sidoName) {
         return locationMapper.getGugun(sidoName);
     }
+
+    @Override
+    public String getDongCode(String sidoName, String gugunName) {
+        return locationMapper.getDongCode(sidoName, gugunName);
+    }
+
+    @Override
+    public Location getLocation(String dongCode) {
+        return locationMapper.getLocation(dongCode);
+    }
 }
