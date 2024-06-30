@@ -47,15 +47,21 @@ public class BoardController {
     }
 
     @DeleteMapping("/{boardId}")
-    public ResponseEntity<?> delete(@PathVariable("boardId") int boardId) {
+    public ResponseEntity<?> delete(@PathVariable("boardId") int boardId, @RequestHeader("Authorization") String tokenHeader) {
         int cnt = boardService.deleteBoard(boardId);
+
+        String role = jwtUtil.getRoleFromToken(tokenHeader.substring(7));
+        if(role.equals("0")) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근입니다.");
 
         return ResponseEntity.ok(cnt);
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody BoardRequest boardRequest) {
+    public ResponseEntity<?> update(@RequestBody BoardRequest boardRequest, @RequestHeader("Authorization") String tokenHeader) {
         int result = boardService.update(boardRequest);
+
+        String role = jwtUtil.getRoleFromToken(tokenHeader.substring(7));
+        if(role.equals("0")) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근입니다.");
 
         return ResponseEntity.ok(result);
     }
