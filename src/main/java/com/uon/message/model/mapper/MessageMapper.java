@@ -16,4 +16,6 @@ public interface MessageMapper {
     public Message findById(int messageId);
     public int sendMessage(Message message);
     public int deleteMessage(int messageId);
+    public int senderDelete(int messageId);
+    public int receiverDelete(int messageId);
 }

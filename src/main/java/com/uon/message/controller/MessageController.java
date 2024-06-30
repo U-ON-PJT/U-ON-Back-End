@@ -62,7 +62,9 @@ public class MessageController {
     public ResponseEntity<?> deleteMessage(@RequestHeader("Authorization") String tokenHeader, @PathVariable("messageId") int messageId) {
         String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
 
-        int result = messageService.deleteMessage(messageId);
+        int result = messageService.deleteMessage(messageId, userId);
+
+        if(result == 0) ResponseEntity.status(HttpStatus.NOT_FOUND).body("잘못된 요청");
 
         return ResponseEntity.ok(result);
     }

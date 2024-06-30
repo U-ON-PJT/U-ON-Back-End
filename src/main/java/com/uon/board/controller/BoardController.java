@@ -1,6 +1,7 @@
 package com.uon.board.controller;
 
 import com.uon.board.dto.Board;
+import com.uon.board.dto.BoardPaginationResponse;
 import com.uon.board.dto.BoardRequest;
 import com.uon.board.model.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +24,13 @@ public class BoardController {
     }
 
     @GetMapping("/{type}")
-    public ResponseEntity<?> getBoard(@PathVariable("type") int type) {
-        List<Board> boardList = boardService.getBoard(type);
+    public ResponseEntity<?> getBoard(@PathVariable("type") int type,
+    @RequestParam(value = "size", defaultValue = "10") int size,
+    @RequestParam(value = "page", defaultValue = "1") int page) {
+        BoardPaginationResponse response = boardService.getBoard(type, size, page);
 
 
-        return ResponseEntity.ok(boardList);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/detail/{boardId}")

@@ -46,9 +46,9 @@ public class MatchingController {
     }
 
     @GetMapping
-    public ResponseEntity<?> selectAllMatchingRoom() {
-        List<Activity> activityList = matchingService.selectAllMatchingRoom();
-        System.out.println(activityList);
+    public ResponseEntity<?> selectAllMatchingRoom(@RequestParam(value = "size", defaultValue = "10") int size,
+                                                    @RequestParam(value = "page", defaultValue = "1") int page) {
+        List<Activity> activityList = matchingService.selectAllMatchingRoom(size, page);
         if (activityList != null) {
             return ResponseEntity.status(200).body(activityList);
         }
@@ -57,8 +57,10 @@ public class MatchingController {
     }
 
     @GetMapping("/{type}")
-    public ResponseEntity<?> selectMatchingRoomOfType(@PathVariable("type") int type) {
-        List<Activity> activityListOfType = matchingService.selectMatchingRoomOfType(type);
+    public ResponseEntity<?> selectMatchingRoomOfType(@PathVariable("type") int type,
+                                                      @RequestParam(value = "size", defaultValue = "10") int size,
+                                                      @RequestParam(value = "page", defaultValue = "1") int page) {
+        List<Activity> activityListOfType = matchingService.selectMatchingRoomOfType(type, size, page);
 
         if (activityListOfType.isEmpty()) {
             return ResponseEntity.status(200).body("Empty Matching Room Of Type");
