@@ -11,5 +11,6 @@ public class Message {
     private String content;
     private String sendTime;
     private int isRead;
+    private int isDelete;
     private int type; // 송수신 구분
 }
