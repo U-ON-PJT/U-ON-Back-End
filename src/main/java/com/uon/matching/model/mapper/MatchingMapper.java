@@ -13,6 +13,8 @@ public interface MatchingMapper {
     int insertMatchingRoom(Activity activity);
     int updateMatchingRoom(Activity activity);
     List<Activity> selectAllMatchingRoom(Map<String, Object> paramMap);
+
+    List<Activity> selectAllMatchingRoom2(Map<String, Object> paramMap);
     List<Activity> selectMatchingRoomOfType(Map<String, Object> paramMap);
     Activity selectMatchingRoom(int activityId);
     int deleteMatchingRoom(int activityId);
