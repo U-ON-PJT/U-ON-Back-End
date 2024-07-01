@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -43,9 +45,13 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
-    public List<Activity> selectAllMatchingRoom() {
+    public List<Activity> selectAllMatchingRoom(int size, int page) {
         try {
-            List<Activity> activityList = matchingMapper.selectAllMatchingRoom();
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("size", size);
+            paramMap.put("offset", (page - 1) * size);
+
+            List<Activity> activityList = matchingMapper.selectAllMatchingRoom(paramMap);
             return activityList;
         } catch (Exception e) {
             log.error("매칭방을 조회하는 도중 문제가 발생함");
@@ -55,9 +61,33 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
-    public List<Activity> selectMatchingRoomOfType(int type) {
+    public List<Activity> selectAllMatchingRoom2(int size, int page, int type, String selectDate, String parsingDongCode) {
         try {
-            List<Activity> activityListOfType = matchingMapper.selectMatchingRoomOfType(type);
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("size", size);
+            paramMap.put("offset", (page - 1) * size);
+            paramMap.put("type", type);
+            paramMap.put("selectDate", selectDate);
+            paramMap.put("parsingDongCode", parsingDongCode);
+
+            List<Activity> activityList = matchingMapper.selectAllMatchingRoom2(paramMap);
+            return activityList;
+        } catch (Exception e) {
+            log.error("매칭방을 조회하는 도중 문제가 발생함");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Activity> selectMatchingRoomOfType(int type, int size, int page) {
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("type", type);
+            paramMap.put("size", size);
+            paramMap.put("offset", (page - 1) * size);
+
+            List<Activity> activityListOfType = matchingMapper.selectMatchingRoomOfType(paramMap);
             return activityListOfType;
         } catch (Exception e) {
             log.error("매칭방을 타입 별로 조회하는 도중 문제가 발생함");

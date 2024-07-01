@@ -9,4 +9,8 @@ import java.util.List;
 public interface LocationMapper {
 
     List<Location> getGugun(String sidoName);
+
+    String getDongCode(String sidoName, String gugunName);
+
+    Location getLocation(String dongCode);
 }

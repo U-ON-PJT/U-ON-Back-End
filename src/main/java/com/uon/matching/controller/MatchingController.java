@@ -46,8 +46,27 @@ public class MatchingController {
     }
 
     @GetMapping
-    public ResponseEntity<?> selectAllMatchingRoom() {
-        List<Activity> activityList = matchingService.selectAllMatchingRoom();
+    public ResponseEntity<?> selectAllMatchingRoom(@RequestParam(value = "size", defaultValue = "10") int size,
+                                                    @RequestParam(value = "page", defaultValue = "1") int page) {
+        List<Activity> activityList = matchingService.selectAllMatchingRoom(size, page);
+        if (activityList != null) {
+            return ResponseEntity.status(200).body(activityList);
+        }
+
+        return ResponseEntity.status(400).body("Faild! selectAllMatchingRoom()");
+    }
+
+    @GetMapping("/allSelect")
+    public ResponseEntity<?> selectAllMatchingRoom2(@RequestParam(value = "size", defaultValue = "10") int size,
+                                                    @RequestParam(value = "page", defaultValue = "1") int page,
+                                                    @RequestParam("type") int type,
+                                                    @RequestParam("selectDate") String selectDate,
+                                                    @RequestParam("parsingDongCode") String parsingDongCode) {
+        System.out.println("type=" + type);
+        System.out.println("selectDate=" + selectDate);
+        System.out.println("parsingDongCode=" + parsingDongCode);
+        List<Activity> activityList = matchingService.selectAllMatchingRoom2(size, page, type, selectDate, parsingDongCode);
+
         System.out.println(activityList);
         if (activityList != null) {
             return ResponseEntity.status(200).body(activityList);
@@ -57,8 +76,10 @@ public class MatchingController {
     }
 
     @GetMapping("/{type}")
-    public ResponseEntity<?> selectMatchingRoomOfType(@PathVariable("type") int type) {
-        List<Activity> activityListOfType = matchingService.selectMatchingRoomOfType(type);
+    public ResponseEntity<?> selectMatchingRoomOfType(@PathVariable("type") int type,
+                                                      @RequestParam(value = "size", defaultValue = "10") int size,
+                                                      @RequestParam(value = "page", defaultValue = "1") int page) {
+        List<Activity> activityListOfType = matchingService.selectMatchingRoomOfType(type, size, page);
 
         if (activityListOfType.isEmpty()) {
             return ResponseEntity.status(200).body("Empty Matching Room Of Type");

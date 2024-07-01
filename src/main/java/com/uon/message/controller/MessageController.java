@@ -51,8 +51,10 @@ public class MessageController {
         message.setSenderId(userId);
         
         int result = messageService.sendMessage(message);
-        
-        if(result == 0) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("전송 실패");
+
+        System.out.println(result);
+
+        if(result == 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("전송 실패");
         
         return ResponseEntity.ok(result);
     }
@@ -62,7 +64,9 @@ public class MessageController {
     public ResponseEntity<?> deleteMessage(@RequestHeader("Authorization") String tokenHeader, @PathVariable("messageId") int messageId) {
         String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
 
-        int result = messageService.deleteMessage(messageId);
+        int result = messageService.deleteMessage(messageId, userId);
+
+        if(result == 0) ResponseEntity.status(HttpStatus.NOT_FOUND).body("잘못된 요청");
 
         return ResponseEntity.ok(result);
     }
