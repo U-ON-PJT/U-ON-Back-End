@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public int updateUser(User user) {
+    public String updateUser(User user) {
 
         Map<String, String> param = new HashMap<>();
         param.put("sidoName", user.getSidoName());
@@ -93,9 +93,23 @@ public class UserServiceImpl implements UserService {
 
         user.setDongCode(userMapper.findByName(param));
 
-        if(user.getDongCode() == null) return 0;
+        if(user.getDongCode() == null) return null;
 
-        return userMapper.updateUser(user);
+        int result = userMapper.updateUser(user);
+
+        if(result == 0) return null;
+
+        User userInfo = userMapper.login(user.getUserId());
+
+        int exp = userInfo.getExperience();
+
+        if(exp >= 5000 ) userInfo.setLevel(5);
+        else if(exp >= 3000) userInfo.setLevel(4);
+        else if(exp >= 2000) userInfo.setLevel(3);
+        else if (exp >= 1000) userInfo.setLevel(2);
+        else userInfo.setLevel(1);
+
+        return jwtUtil.generateToken(userInfo);
     }
 
     @Override
