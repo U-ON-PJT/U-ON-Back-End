@@ -14,6 +14,7 @@ public interface MatchingMapper {
     int updateMatchingRoom(Activity activity);
     List<Activity> selectAllMatchingRoom(Map<String, Object> paramMap);
     List<Activity> selectAllMyMatchingRoom(Map<String, Object> paramMap);
+    List<Activity> selectAllMyEnterMatchingRoom(Map<String, Object> paramMap);
     List<Activity> selectMatchingRoomOfType(Map<String, Object> paramMap);
     Activity selectMatchingRoom(int activityId);
     int deleteMatchingRoom(int activityId);

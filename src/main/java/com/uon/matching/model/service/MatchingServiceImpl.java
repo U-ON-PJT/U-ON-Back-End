@@ -100,6 +100,34 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
+    public List<Activity> selectAllMyEnterMatchingRoom(String userId, int size, int page) {
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("userId", userId);
+            paramMap.put("size", size);
+            paramMap.put("offset", (page - 1) * size);
+
+            List<Activity> activityList = matchingMapper.selectAllMyEnterMatchingRoom(paramMap);
+
+            //마감시간이 지나면 모집 마감 처리
+            for (Activity activity : activityList) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date deadline = formatter.parse(activity.getDeadline());
+                Date currentDate = new Date();
+
+                if (currentDate.after(deadline)) {
+                    matchingMapper.updateIsDeadline(activity.getActivityId());
+                }
+            }
+            return activityList;
+        } catch (Exception e) {
+            log.error("매칭방을 조회하는 도중 문제가 발생함");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public List<Activity> selectMatchingRoomOfType(int type, int size, int page) {
         try {
             Map<String, Object> paramMap = new HashMap<>();

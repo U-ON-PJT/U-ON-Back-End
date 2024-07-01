@@ -43,6 +43,19 @@
         limit #{size} offset #{offset}
     </select>
 
+    <select id="selectAllMyEnterMatchingRoom" parameterType="map" resultType="activity">
+        select
+        a.activity_id as activityId, a.activity_address as activityAddress, a.activity_date as activityDate, a.content,
+        date_add(a.activity_date, interval -1 hour) as deadline, a.create_time as createTime, a.current_participant as currentParticipant, a.dong_code as dongCode,
+        a.is_completed as isCompleted, a.is_deadline as isDeadline, a.max_participant as maxParticipant,
+        a.min_participant as minParticipant, a.title, a.type, a.user_id as userId
+        from activity a join participant p
+        on a.activity_id = p.activity_id
+        where p.user_id=#{userId}
+        order by a.activity_id desc
+        limit #{size} offset #{offset}
+    </select>
+
     <select id="selectMatchingRoomOfType" parameterType="map" resultType="activity">
         select
         activity_id as activityId, activity_address as activityAddress, activity_date as activityDate, content,
