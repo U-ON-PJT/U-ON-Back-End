@@ -84,6 +84,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserInfo(String userId) {
+        return null;
+    }
+
+    @Override
     @Transactional
     public int updateUser(User user) {
 

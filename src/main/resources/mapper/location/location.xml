@@ -21,4 +21,9 @@
 		where dong_code=#{dongCode};
 	</select>
 
+	<select id="activityDongCode" parameterType="string" resultType="string">
+		select dong_code from dong_code
+		where concat(gugun_name, ' ', dong_name) = #{parsingPlace};
+	</select>
+
 </mapper>

@@ -70,4 +70,11 @@
 		and phone = #{phone}
 		and birth = #{birth}
 	</select>
+
+	<select id="getUserInfo" parameterType="string" resultType="user">
+		select user_id, name, birth, role, phone, dong_code, center, point, experience
+		from user
+		where user_id = #{userId}
+
+	</select>
 </mapper>
