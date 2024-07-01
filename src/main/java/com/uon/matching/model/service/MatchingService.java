@@ -11,6 +11,7 @@ public interface MatchingService {
     List<Activity> selectAllMatchingRoom(int size, int page);
     List<Activity> selectAllMyMatchingRoom(String userId, int size, int page);
     List<Activity> selectAllMyEnterMatchingRoom(String userId, int size, int page);
+    int isEnterMatchingRoom(String userId, int activityId);
     List<Activity> selectAllMatchingRoom2(int size, int page, int type, String selectDate, String parsingDongCode);
     List<Activity> selectMatchingRoomOfType(int type, int size, int page);
     Activity selectMatchingRoom(int activityId);
