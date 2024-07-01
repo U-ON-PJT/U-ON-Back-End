@@ -207,6 +207,13 @@ public class MatchingServiceImpl implements MatchingService {
                 log.error("마감시간 이후 신청 불가");
                 return -1;
             }
+
+            //모집 마감으로 인한 신청 제한
+            if (activityInfo.getIsDeadline() == 1) {
+                log.error("신청 인원이 꽉 참으로 인한 신청 제한");
+                return -1;
+            }
+
             activityInfo.setCurrentParticipant(activityInfo.getCurrentParticipant() + 1);
 
             if (matchingMapper.updateMatchingRoom(activityInfo) != 1) {
@@ -218,6 +225,12 @@ public class MatchingServiceImpl implements MatchingService {
                 return -1;
             }
 
+            if (activityInfo.getCurrentParticipant() == activityInfo.getMaxParticipant()) {
+                if (matchingMapper.updateIsDeadline(activityInfo.getActivityId()) != 1) {
+                    log.error("모집 마감하는 과정에서 문제 발생");
+                    return -1;
+                }
+            }
             return 0;
         } catch (Exception e) {
             log.error("매칭 신청을 하는 도중 문제가 발생함");
@@ -249,6 +262,7 @@ public class MatchingServiceImpl implements MatchingService {
             }
 
             activityInfo.setCurrentParticipant(activityInfo.getCurrentParticipant() - 1);
+            activityInfo.setIsDeadline(0);
 
             if (matchingMapper.updateMatchingRoom(activityInfo) != 1) {
                 log.error("현재 활동 인원을 -1 하는 과정에서 문제 발생");
