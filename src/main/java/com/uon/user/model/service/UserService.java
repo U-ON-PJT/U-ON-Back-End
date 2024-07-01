@@ -11,7 +11,7 @@ public interface UserService {
     int deleteUser(String userId);
     User findById(String userId);
     User getUserInfo(String userId);
-    int updateUser(User user);
+    String updateUser(User user);
     int updatePassword(User user);
     List<String> getId(User user);
 

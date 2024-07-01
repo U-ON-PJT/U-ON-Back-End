@@ -87,11 +87,12 @@ public class UserController {
         String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
         if(!userId.equals(user.getUserId())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근입니다.");
         System.out.println("user: " + user);
-        int result = userService.updateUser(user);
 
-        if (result == 0) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("지역 없음");
+        String token = userService.updateUser(user);
 
-        return ResponseEntity.ok(result);
+        if(token == null ) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("변경 실패");
+
+        return ResponseEntity.ok(token);
     }
 
     // 비밀번호 변경
