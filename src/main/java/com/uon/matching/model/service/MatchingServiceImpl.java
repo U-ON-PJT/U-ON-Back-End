@@ -128,6 +128,24 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
+    public int isEnterMatchingRoom(String userId, int activityId) {
+        Activity activity = matchingMapper.selectMatchingRoom(activityId);
+
+        //내가 올린 방인지
+        if (activity.getUserId().equals(userId)) {
+            return 1;
+        }
+
+        Participant participant = new Participant(userId, activityId);
+        int isContainsMatchingParticipant = matchingMapper.isContainsMatchingParticipant(participant);
+
+        if (isContainsMatchingParticipant == 0 || isContainsMatchingParticipant == 1) {
+            return isContainsMatchingParticipant;
+        }
+        return -1;
+    }
+
+    @Override
     public List<Activity> selectAllMatchingRoom2(int size, int page, int type, String selectDate, String parsingDongCode) {
         try {
             Map<String, Object> paramMap = new HashMap<>();

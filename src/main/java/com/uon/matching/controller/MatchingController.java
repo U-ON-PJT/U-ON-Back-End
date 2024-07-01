@@ -127,6 +127,19 @@ public class MatchingController {
         return ResponseEntity.status(400).body("Faild! selectAllMatchingRoom()");
     }
 
+    @GetMapping("/enter-matching-room/{activityId}")
+    public ResponseEntity<?> isEnterMatchingRoom(
+            @RequestHeader("Authorization") String tokenHeader,
+            @PathVariable("activityId") int activityId) {
+        String tokenUserId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+
+        int isEnter = matchingService.isEnterMatchingRoom(tokenUserId, activityId);
+        if (isEnter == 0 || isEnter == 1) {
+            return ResponseEntity.status(200).body(isEnter);
+        }
+        return ResponseEntity.status(400).body("Faild! selectAllMatchingRoom()");
+    }
+
     @DeleteMapping("/{activityId}")
     public ResponseEntity<?> deleteMatchingRoom(@PathVariable("activityId") int activityId,
                                                 @RequestHeader("Authorization") String tokenHeader) {
