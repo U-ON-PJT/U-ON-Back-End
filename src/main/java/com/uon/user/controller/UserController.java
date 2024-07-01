@@ -71,15 +71,15 @@ public class UserController {
 
         return ResponseEntity.ok(user);
     }
-    @GetMapping("/others")
-    public ResponseEntity<?> getUserInfo(String userId) {
-
+    @GetMapping("/others/{userId}")
+    public ResponseEntity<?> getUserInfo(@PathVariable("userId") String userId) {
         User user = userService.getUserInfo(userId);
 
         if(user == null) return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("해당 id를 가진 회원은 없음.");
 
         return ResponseEntity.ok(user);
     }
+
 
     // 회원 정보 변경
     @PutMapping("/my-page")
