@@ -71,18 +71,28 @@ public class UserController {
 
         return ResponseEntity.ok(user);
     }
+    @GetMapping("/others/{userId}")
+    public ResponseEntity<?> getUserInfo(@PathVariable("userId") String userId) {
+        User user = userService.getUserInfo(userId);
+
+        if(user == null) return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("해당 id를 가진 회원은 없음.");
+
+        return ResponseEntity.ok(user);
+    }
+
 
     // 회원 정보 변경
     @PutMapping("/my-page")
     public ResponseEntity<?> updateUser(@RequestHeader("Authorization") String tokenHeader, @RequestBody User user) {
         String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
         if(!userId.equals(user.getUserId())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근입니다.");
+        System.out.println("user: " + user);
 
-        int result = userService.updateUser(user);
+        String token = userService.updateUser(user);
 
-        if (result == 0) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("지역 없음");
+        if(token == null ) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("변경 실패");
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(token);
     }
 
     // 비밀번호 변경

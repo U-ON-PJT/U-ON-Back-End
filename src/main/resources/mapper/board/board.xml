@@ -2,10 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.uon.board.model.mapper.BoardMapper">
-    <select id="getBoard" parameterType="int" resultType="board">
-        select board_id, user_id, title, content, create_time
+    <select id="getBoard" parameterType="map" resultType="board">
+        select board_id, user_id, title, content, create_time, type
         from board
+        <if test="type != 0">
         where type=#{type}
+        </if>
+        order by board_id desc
+        limit #{size} offset #{offset};
+    </select>
+
+    <select id="totalRow" parameterType="map" resultType="int">
+        select count(*)
+        from message
     </select>
 
     <select id="getBoardImages" parameterType="int" resultType="boardImage">
@@ -27,16 +36,16 @@
              (#{userId}, #{type}, #{title}, #{content})
     </insert>
 
-<!--    <insert id="insertImages" parameterType="list">-->
-<!--        insert into board_image-->
-<!--            (board_id, image_url) values-->
-<!--        <foreach collection="list" item="item" separator=",">-->
-<!--            (-->
-<!--            #{item.boardId},-->
-<!--            #{item.imageUrl}-->
-<!--            )-->
-<!--        </foreach>-->
-<!--    </insert>-->
+    <insert id="insertImages" parameterType="list">
+        insert into board_image
+            (board_id, image_url) values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.boardId},
+            #{item.imageUrl}
+            )
+        </foreach>
+    </insert>
     <insert id="">
 
     </insert>
@@ -46,13 +55,21 @@
         from board
     </select>
 
- <!--   <update id="update" parameterType="board">
+    <update id="update" parameterType="board">
         update board
-        set b
-    </update>-->
+        set type=#{type}, title=#{title}, content=#{content}
+        where board_id=#{boardId}
+    </update>
 
     <delete id="delete">
         delete from board
         where board_id=#{boardId}
     </delete>
+
+    <delete id="deleteImages">
+        delete from board_image
+        where board_id=#{boardId}
+    </delete>
+
+
 </mapper>

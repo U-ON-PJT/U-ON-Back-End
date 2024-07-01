@@ -128,6 +128,25 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
+    public List<Activity> selectAllMatchingRoom2(int size, int page, int type, String selectDate, String parsingDongCode) {
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("size", size);
+            paramMap.put("offset", (page - 1) * size);
+            paramMap.put("type", type);
+            paramMap.put("selectDate", selectDate);
+            paramMap.put("parsingDongCode", parsingDongCode);
+
+            List<Activity> activityList = matchingMapper.selectAllMatchingRoom2(paramMap);
+            return activityList;
+        } catch (Exception e) {
+            log.error("매칭방을 조회하는 도중 문제가 발생함");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public List<Activity> selectMatchingRoomOfType(int type, int size, int page) {
         try {
             Map<String, Object> paramMap = new HashMap<>();
