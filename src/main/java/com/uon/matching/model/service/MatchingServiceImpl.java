@@ -304,6 +304,10 @@ public class MatchingServiceImpl implements MatchingService {
 
             Activity activityInfo = matchingMapper.selectMatchingRoom(participant.getActivityId());
 
+            //방장은 자기 매칭방을 신청하지 못함
+            if (activityInfo.getUserId().equals(participant.getUserId())) {
+                return -1;
+            }
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date deadline = formatter.parse(activityInfo.getDeadline());
             Date currentDate = new Date();
@@ -356,6 +360,11 @@ public class MatchingServiceImpl implements MatchingService {
             }
 
             Activity activityInfo = matchingMapper.selectMatchingRoom(participant.getActivityId());
+
+            //방장은 자기 매칭방을 신청 취소하지 못함
+            if (activityInfo.getUserId().equals(participant.getUserId())) {
+                return -1;
+            }
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date deadline = formatter.parse(activityInfo.getDeadline());
