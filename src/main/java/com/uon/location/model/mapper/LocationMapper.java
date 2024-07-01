@@ -13,4 +13,6 @@ public interface LocationMapper {
     String getDongCode(String sidoName, String gugunName);
 
     Location getLocation(String dongCode);
+
+    String activityDongCode(String parsingPlace);
 }

@@ -10,6 +10,7 @@ public interface UserService {
     String login(User user);
     int deleteUser(String userId);
     User findById(String userId);
+    User getUserInfo(String userId);
     String updateUser(User user);
     int updatePassword(User user);
     List<String> getId(User user);

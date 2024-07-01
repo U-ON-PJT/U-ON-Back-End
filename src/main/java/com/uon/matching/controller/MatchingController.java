@@ -26,6 +26,7 @@ public class MatchingController {
                                                 @RequestHeader("Authorization") String tokenHeader) {
         String tokenUserId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
         activity.setUserId(tokenUserId);
+        System.out.println(activity);
         int isSuccess = matchingService.insertMatchingRoom(activity);
 
         if (isSuccess == 1) {
