@@ -52,6 +52,45 @@ public class MatchingServiceImpl implements MatchingService {
             paramMap.put("offset", (page - 1) * size);
 
             List<Activity> activityList = matchingMapper.selectAllMatchingRoom(paramMap);
+
+            //마감시간이 지나면 모집 마감 처리
+            for (Activity activity : activityList) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date deadline = formatter.parse(activity.getDeadline());
+                Date currentDate = new Date();
+
+                if (currentDate.after(deadline)) {
+                    matchingMapper.updateIsDeadline(activity.getActivityId());
+                }
+            }
+            return activityList;
+        } catch (Exception e) {
+            log.error("매칭방을 조회하는 도중 문제가 발생함");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Activity> selectAllMyMatchingRoom(String userId, int size, int page) {
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("userId", userId);
+            paramMap.put("size", size);
+            paramMap.put("offset", (page - 1) * size);
+
+            List<Activity> activityList = matchingMapper.selectAllMyMatchingRoom(paramMap);
+
+            //마감시간이 지나면 모집 마감 처리
+            for (Activity activity : activityList) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date deadline = formatter.parse(activity.getDeadline());
+                Date currentDate = new Date();
+
+                if (currentDate.after(deadline)) {
+                    matchingMapper.updateIsDeadline(activity.getActivityId());
+                }
+            }
             return activityList;
         } catch (Exception e) {
             log.error("매칭방을 조회하는 도중 문제가 발생함");
@@ -69,6 +108,17 @@ public class MatchingServiceImpl implements MatchingService {
             paramMap.put("offset", (page - 1) * size);
 
             List<Activity> activityListOfType = matchingMapper.selectMatchingRoomOfType(paramMap);
+
+            //마감시간이 지나면 모집 마감 처리
+            for (Activity activity : activityListOfType) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date deadline = formatter.parse(activity.getDeadline());
+                Date currentDate = new Date();
+
+                if (currentDate.after(deadline)) {
+                    matchingMapper.updateIsDeadline(activity.getActivityId());
+                }
+            }
             return activityListOfType;
         } catch (Exception e) {
             log.error("매칭방을 타입 별로 조회하는 도중 문제가 발생함");
@@ -81,6 +131,16 @@ public class MatchingServiceImpl implements MatchingService {
     public Activity selectMatchingRoom(int activityId) {
         try {
             Activity activityInfo = matchingMapper.selectMatchingRoom(activityId);
+
+            //마감시간이 지나면 모집 마감 처리
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date deadline = formatter.parse(activityInfo.getDeadline());
+            Date currentDate = new Date();
+
+            if (currentDate.after(deadline)) {
+                matchingMapper.updateIsDeadline(activityInfo.getActivityId());
+            }
+
             return activityInfo;
         } catch (Exception e) {
             log.error("매칭방을 상세 조회하는 도중 문제가 발생함");

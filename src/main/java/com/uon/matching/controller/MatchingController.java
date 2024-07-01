@@ -80,6 +80,20 @@ public class MatchingController {
         return ResponseEntity.status(400).body("Faild! selectMatchingRoom()");
     }
 
+    @GetMapping("/my-matching-room")
+    public ResponseEntity<?> selectAllMyMatchingRoom(
+                                                @RequestHeader("Authorization") String tokenHeader,
+                                                @RequestParam(value = "size", defaultValue = "10") int size,
+                                                @RequestParam(value = "page", defaultValue = "1") int page) {
+        String tokenUserId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+        List<Activity> activityList = matchingService.selectAllMyMatchingRoom(tokenUserId, size, page);
+        if (activityList != null) {
+            return ResponseEntity.status(200).body(activityList);
+        }
+
+        return ResponseEntity.status(400).body("Faild! selectAllMatchingRoom()");
+    }
+
     @DeleteMapping("/{activityId}")
     public ResponseEntity<?> deleteMatchingRoom(@PathVariable("activityId") int activityId,
                                                 @RequestHeader("Authorization") String tokenHeader) {
