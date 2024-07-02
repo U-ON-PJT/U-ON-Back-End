@@ -113,7 +113,7 @@ public class MatchingController {
             return ResponseEntity.status(200).body(activityList);
         }
 
-        return ResponseEntity.status(400).body("Faild! selectAllMatchingRoom()");
+        return ResponseEntity.status(400).body("Faild! selectAllMyMatchingRoom()");
     }
 
     @GetMapping("/my-enter-matching-room")
@@ -126,7 +126,7 @@ public class MatchingController {
         if (activityList != null) {
             return ResponseEntity.status(200).body(activityList);
         }
-        return ResponseEntity.status(400).body("Faild! selectAllMatchingRoom()");
+        return ResponseEntity.status(400).body("Faild! selectAllMyEnterMatchingRoom()");
     }
 
     @GetMapping("/enter-matching-room/{activityId}")
@@ -136,10 +136,10 @@ public class MatchingController {
         String tokenUserId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
 
         int isEnter = matchingService.isEnterMatchingRoom(tokenUserId, activityId);
-        if (isEnter == 0 || isEnter == 1) {
+        if (isEnter == 0 || isEnter == 1 || isEnter == 2) {
             return ResponseEntity.status(200).body(isEnter);
         }
-        return ResponseEntity.status(400).body("Faild! selectAllMatchingRoom()");
+        return ResponseEntity.status(400).body("Faild! isEnterMatchingRoom()");
     }
 
     @DeleteMapping("/{activityId}")
