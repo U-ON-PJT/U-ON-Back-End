@@ -10,7 +10,7 @@ import java.util.Map;
 public interface MessageMapper {
     public List<Message> selectMessage(Map<String, Object> param);
     int totalRow(Map<String, Object> param);
-    int isReadCount(Map<String, Object> param);
+//    int isReadCount(Map<String, Object> param);
     public Message isReceiver(int messageId);
     public int firstRead(int messageId);
     public Message findById(int messageId);
