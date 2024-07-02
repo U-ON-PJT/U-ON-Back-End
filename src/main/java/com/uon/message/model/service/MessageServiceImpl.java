@@ -19,14 +19,21 @@ public class MessageServiceImpl implements MessageService{
     private final MessageMapper messageMapper;
     @Override
     @Transactional
-    public MessagePaginationResponse selectMessage(String userId, int type, int size, int page) {
+    public MessagePaginationResponse selectMessage(String userId, int size, int page) {
         Map<String, Object> param = new HashMap<>();
         param.put("userId", userId);
-        param.put("type", type);
+//        param.put("type", type);
         param.put("size", size);
         param.put("offset", (page-1)*size);
 
+        int unReadCount = 0;
         List<Message> messages = messageMapper.selectMessage(param);
+
+        for(Message message : messages){
+            if(message.getReceiverId().equals(userId)) {
+                if(message.getIsRead() == 0) unReadCount++;
+            }
+        }
 
         MessagePaginationResponse resp = new MessagePaginationResponse();
         resp.setMessageList(messages);
@@ -36,7 +43,9 @@ public class MessageServiceImpl implements MessageService{
         resp.setSize(size);
         resp.setPage(page);
 
-        if(type == 1) resp.setCount(messageMapper.isReadCount(param));
+        resp.setCount(unReadCount);
+
+//        if(type == 1) resp.setCount(messageMapper.isReadCount(param));
 
         return resp;
     }
