@@ -132,6 +132,10 @@ public class MatchingServiceImpl implements MatchingService {
     public int isEnterMatchingRoom(String userId, int activityId) {
         Activity activity = matchingMapper.selectMatchingRoom(activityId);
 
+        //이미 마감된 방인지
+        if (activity.getIsDeadline() == 1) {
+            return 2;
+        }
         //내가 올린 방인지
         if (activity.getUserId().equals(userId)) {
             return 1;
