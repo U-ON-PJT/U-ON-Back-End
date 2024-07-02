@@ -2,6 +2,7 @@ package com.uon.matching.model.service;
 
 import com.uon.matching.dto.Activity;
 import com.uon.matching.dto.Participant;
+import com.uon.matching.model.UserExperience;
 import com.uon.matching.model.mapper.MatchingMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -264,7 +265,25 @@ public class MatchingServiceImpl implements MatchingService {
                 return -1;
             }
 
+            //신청이 마감되었고, 활동이 아직 완료되지 않은 상태라면
+            if (activityInfo.getIsDeadline() == 0 || activityInfo.getIsCompleted() == 1) {
+                log.error("신청이 마감되지 않았거나, 이미 활동이 마감된 매칭임");
+                return -1;
+            }
+
             matchingMapper.updateIsComplete(activityId);
+
+            List<Participant> participantList = matchingMapper.selectParticipants(activityId);
+            Map<String, Object> paramMap = new HashMap<>();
+            participantList.add(new Participant(userId, activityId));
+
+            for (Participant participant : participantList) {
+                paramMap.put("userId", participant.getUserId());
+                paramMap.put("experienceValue", UserExperience.ACTIVITY_EXPERIENCE.getValue());
+                paramMap.put("pointValue", UserExperience.ACTIVITY_POINT.getValue());
+                matchingMapper.increaseExperience(paramMap);
+            }
+
             return 0;
         } catch (Exception e) {
             log.error("활동을 완료하는 도중 문제가 발생함");

@@ -25,4 +25,5 @@ public interface MatchingMapper {
     List<Participant> selectParticipants(int activityId);
     int insertParticipant(Participant participant);
     int deleteParticipant(Participant participant);
+    int increaseExperience(Map<String, Object> paramMap);
 }

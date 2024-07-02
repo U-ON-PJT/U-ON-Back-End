@@ -19,7 +19,12 @@
         is_deadline=#{isDeadline}, max_participant=#{maxParticipant}, min_participant=#{minParticipant}, type=#{type}
         where activity_id=#{activityId};
     </update>
-    
+
+    <update id="increaseExperience" parameterType="map">
+        update user set experience=experience+#{experienceValue}, point=point+#{pointValue}
+        where user_id=#{userId};
+    </update>
+
     <select id="selectAllMatchingRoom" parameterType="map" resultType="activity">
         select
         activity_id as activityId, activity_address as activityAddress, activity_date as activityDate, content,

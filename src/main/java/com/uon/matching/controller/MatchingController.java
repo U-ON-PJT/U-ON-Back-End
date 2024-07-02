@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -168,6 +169,7 @@ public class MatchingController {
     }
 
     @PutMapping("/complete/{activityId}")
+    @Transactional
     public ResponseEntity<?> updateIsComplete(@PathVariable("activityId") int activityId,
                                               @RequestHeader("Authorization") String tokenHeader) {
         String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
