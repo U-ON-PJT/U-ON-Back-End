@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 public enum UserExperience {
 
-    ACTIVITY_EXPERIENCE(50),
-    ACTIVITY_POINT(100);
+    ACTIVITY_EXPERIENCE(20),
+    ACTIVITY_POINT(10);
 
     private final int value;
 

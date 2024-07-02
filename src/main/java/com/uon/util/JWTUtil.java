@@ -79,7 +79,7 @@ public class JWTUtil {
                 .parseSignedClaims(token)
                 .getPayload();
 
-        String role = (String) claims.get("role");
+        String role = claims.get("role").toString();
         log.debug("claim role:{}",role);
         return role;
     }
