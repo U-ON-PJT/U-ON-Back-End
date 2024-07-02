@@ -6,10 +6,10 @@
 
     <insert id="insertMatchingRoom" parameterType="activity">
         insert into activity
-        (user_id, title, content, activity_address, activity_date, current_participant, max_participant,
+        (user_id, title, content, activity_address, activity_date, max_participant,
         min_participant, dong_code, is_completed, is_deadline, type, create_time)
         values
-        (#{userId}, #{title}, #{content}, #{activityAddress}, #{activityDate}, #{currentParticipant}, #{maxParticipant},
+        (#{userId}, #{title}, #{content}, #{activityAddress}, #{activityDate}, #{maxParticipant},
         #{minParticipant}, #{dongCode}, #{isCompleted}, #{isDeadline}, #{type}, now())
     </insert>
 
@@ -45,7 +45,15 @@
                 and type=#{type}
             </when>
         </choose>
-        order by activity_id desc
+        <choose>
+            <when test="algo == 0">
+                order by activity_date
+            </when>
+            <when test="algo == 1">
+                order by createTime desc
+            </when>
+        </choose>
+
         limit #{size} offset #{offset}
     </select>
 

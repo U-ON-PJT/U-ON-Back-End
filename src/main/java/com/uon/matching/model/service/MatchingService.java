@@ -9,7 +9,7 @@ public interface MatchingService {
     int insertMatchingRoom(Activity activity);
     int updateMatchingRoom(Activity activity);
     List<Activity> selectAllMatchingRoom(int size, int page);
-    List<Activity> selectAllMatchingRoom2(int size, int page, int type, String selectDate, String parsingDongCode);
+    List<Activity> selectAllMatchingRoom2(int size, int page, int type, int algo, String selectDate, String parsingDongCode);
     List<Activity> selectMatchingRoomOfType(int type, int size, int page);
     Activity selectMatchingRoom(int activityId);
     int deleteMatchingRoom(String userId, int activityId);

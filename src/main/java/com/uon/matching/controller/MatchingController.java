@@ -61,12 +61,13 @@ public class MatchingController {
     public ResponseEntity<?> selectAllMatchingRoom2(@RequestParam(value = "size", defaultValue = "10") int size,
                                                     @RequestParam(value = "page", defaultValue = "1") int page,
                                                     @RequestParam("type") int type,
+                                                    @RequestParam("algo") int algo,
                                                     @RequestParam("selectDate") String selectDate,
                                                     @RequestParam("parsingDongCode") String parsingDongCode) {
         System.out.println("type=" + type);
         System.out.println("selectDate=" + selectDate);
         System.out.println("parsingDongCode=" + parsingDongCode);
-        List<Activity> activityList = matchingService.selectAllMatchingRoom2(size, page, type, selectDate, parsingDongCode);
+        List<Activity> activityList = matchingService.selectAllMatchingRoom2(size, page, type, algo, selectDate, parsingDongCode);
 
         System.out.println(activityList);
         if (activityList != null) {

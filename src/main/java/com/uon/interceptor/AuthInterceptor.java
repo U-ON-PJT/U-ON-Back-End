@@ -37,7 +37,7 @@ public class AuthInterceptor implements HandlerInterceptor{
     private boolean checkToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String requestURI = request.getRequestURI();
 
-        if(requestURI.startsWith("/uon/users/exist") || requestURI.startsWith("/uon/users/sign-up") || requestURI.startsWith("/uon/users/login") || requestURI.startsWith("/uon/users/user-id")) return true;
+        if(requestURI.startsWith("/uon/users/exist") || requestURI.startsWith("/uon/users/sign-up") || requestURI.startsWith("/uon/users/login") || requestURI.startsWith("/uon/users/user-id") || requestURI.startsWith("/uon/users/others")) return true;
         System.out.println(requestURI);
         String tokenHeader = request.getHeader("Authorization");	//Header에서 토큰 정보 추출
 

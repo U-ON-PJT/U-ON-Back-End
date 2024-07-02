@@ -25,7 +25,7 @@
 <!--        </select>-->
 
     <select id="selectMessage" parameterType="map" resultType="message">
-            select message_id, receiver_id, title, send_time, is_read, is_delete
+            select message_id, sender_id, receiver_id, title, send_time, is_read, is_delete
             from message
             where sender_id = #{userId} or receiver_id = #{userId}
             order by message_id DESC

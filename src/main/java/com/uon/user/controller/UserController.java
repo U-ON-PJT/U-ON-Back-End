@@ -100,7 +100,7 @@ public class UserController {
     public ResponseEntity<?> updatePassword(@RequestHeader("Authorization") String tokenHeader, @RequestBody User user) {
         String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
         user.setUserId(userId);
-
+        System.out.println("user" + user);
         int result = userService.updatePassword(user);
 
         if (result == 0) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호 오류");

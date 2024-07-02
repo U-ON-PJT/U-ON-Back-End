@@ -61,7 +61,7 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
-    public List<Activity> selectAllMatchingRoom2(int size, int page, int type, String selectDate, String parsingDongCode) {
+    public List<Activity> selectAllMatchingRoom2(int size, int page, int type, int algo, String selectDate, String parsingDongCode) {
         try {
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("size", size);
@@ -69,6 +69,7 @@ public class MatchingServiceImpl implements MatchingService {
             paramMap.put("type", type);
             paramMap.put("selectDate", selectDate);
             paramMap.put("parsingDongCode", parsingDongCode);
+            paramMap.put("algo", algo);
 
             List<Activity> activityList = matchingMapper.selectAllMatchingRoom2(paramMap);
             return activityList;
