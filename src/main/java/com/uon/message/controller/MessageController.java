@@ -21,14 +21,14 @@ public class MessageController {
     private final JWTUtil jwtUtil;
 
     // 쪽지 조회 (받은, 보낸 쪽지함 list)
-    @GetMapping("/{type}")
+    @GetMapping()
     public ResponseEntity<?> selectAll(@RequestHeader("Authorization") String tokenHeader,
-                                       @PathVariable("type") int type,
+//                                       @PathVariable("type") int type,
                                        @RequestParam(value = "size", defaultValue = "10") int size,
                                        @RequestParam(value = "page", defaultValue = "1") int page) {
         String userId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
 
-        MessagePaginationResponse resp = messageService.selectMessage(userId, type, size, page);
+        MessagePaginationResponse resp = messageService.selectMessage(userId, size, page);
 
         return ResponseEntity.ok(resp);
     }

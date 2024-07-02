@@ -3,9 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.uon.board.model.mapper.BoardMapper">
     <select id="getBoard" parameterType="map" resultType="board">
-        select board_id, user_id, title, content, create_time
+        select board_id, user_id, title, content, create_time, type
         from board
+        <if test="type != 0">
         where type=#{type}
+        </if>
         order by board_id desc
         limit #{size} offset #{offset};
     </select>

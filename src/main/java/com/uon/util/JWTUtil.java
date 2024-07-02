@@ -36,6 +36,7 @@ public class JWTUtil {
                 .claim("name", user.getName())
                 .claim("birth", user.getBirth())
                 .claim("role", user.getRole())
+                .claim("phone", user.getPhone())
                 .claim("dongCode", user.getDongCode())
                 .claim("center", user.getCenter())
                 .claim("experience", user.getExperience())
@@ -71,14 +72,14 @@ public class JWTUtil {
     }
 
     //토큰으로 부터 role 조회
-    public int getRoleFromToken(String token) {
+    public String getRoleFromToken(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(getSecretKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
 
-        int role = (int) claims.get("role");
+        String role = (String) claims.get("role");
         log.debug("claim role:{}",role);
         return role;
     }

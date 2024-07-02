@@ -29,4 +29,9 @@ public class LocationServiceImpl implements LocationService{
     public Location getLocation(String dongCode) {
         return locationMapper.getLocation(dongCode);
     }
+
+    @Override
+    public String activityDongCode(String parsingPlace) {
+        return locationMapper.activityDongCode(parsingPlace);
+    }
 }

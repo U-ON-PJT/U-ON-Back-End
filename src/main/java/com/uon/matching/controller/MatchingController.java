@@ -26,6 +26,7 @@ public class MatchingController {
                                                 @RequestHeader("Authorization") String tokenHeader) {
         String tokenUserId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
         activity.setUserId(tokenUserId);
+        System.out.println(activity);
         int isSuccess = matchingService.insertMatchingRoom(activity);
 
         if (isSuccess == 1) {
@@ -60,12 +61,13 @@ public class MatchingController {
     public ResponseEntity<?> selectAllMatchingRoom2(@RequestParam(value = "size", defaultValue = "10") int size,
                                                     @RequestParam(value = "page", defaultValue = "1") int page,
                                                     @RequestParam("type") int type,
+                                                    @RequestParam("algo") int algo,
                                                     @RequestParam("selectDate") String selectDate,
                                                     @RequestParam("parsingDongCode") String parsingDongCode) {
         System.out.println("type=" + type);
         System.out.println("selectDate=" + selectDate);
         System.out.println("parsingDongCode=" + parsingDongCode);
-        List<Activity> activityList = matchingService.selectAllMatchingRoom2(size, page, type, selectDate, parsingDongCode);
+        List<Activity> activityList = matchingService.selectAllMatchingRoom2(size, page, type, algo, selectDate, parsingDongCode);
 
         System.out.println(activityList);
         if (activityList != null) {
@@ -97,6 +99,46 @@ public class MatchingController {
             return ResponseEntity.status(200).body(activityInfo);
         }
         return ResponseEntity.status(400).body("Faild! selectMatchingRoom()");
+    }
+
+    @GetMapping("/my-matching-room")
+    public ResponseEntity<?> selectAllMyMatchingRoom(
+                                                @RequestHeader("Authorization") String tokenHeader,
+                                                @RequestParam(value = "size", defaultValue = "10") int size,
+                                                @RequestParam(value = "page", defaultValue = "1") int page) {
+        String tokenUserId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+        List<Activity> activityList = matchingService.selectAllMyMatchingRoom(tokenUserId, size, page);
+        if (activityList != null) {
+            return ResponseEntity.status(200).body(activityList);
+        }
+
+        return ResponseEntity.status(400).body("Faild! selectAllMatchingRoom()");
+    }
+
+    @GetMapping("/my-enter-matching-room")
+    public ResponseEntity<?> selectAllMyEnterMatchingRoom(
+            @RequestHeader("Authorization") String tokenHeader,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        String tokenUserId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+        List<Activity> activityList = matchingService.selectAllMyEnterMatchingRoom(tokenUserId, size, page);
+        if (activityList != null) {
+            return ResponseEntity.status(200).body(activityList);
+        }
+        return ResponseEntity.status(400).body("Faild! selectAllMatchingRoom()");
+    }
+
+    @GetMapping("/enter-matching-room/{activityId}")
+    public ResponseEntity<?> isEnterMatchingRoom(
+            @RequestHeader("Authorization") String tokenHeader,
+            @PathVariable("activityId") int activityId) {
+        String tokenUserId = jwtUtil.getIdFromToken(tokenHeader.substring(7));
+
+        int isEnter = matchingService.isEnterMatchingRoom(tokenUserId, activityId);
+        if (isEnter == 0 || isEnter == 1) {
+            return ResponseEntity.status(200).body(isEnter);
+        }
+        return ResponseEntity.status(400).body("Faild! selectAllMatchingRoom()");
     }
 
     @DeleteMapping("/{activityId}")

@@ -15,6 +15,7 @@ public interface UserMapper {
     int deleteUser(String userId);
     User findByDongCode(String dongCode);
     User findById(String userId);
+    User getUserInfo(String userId);
     String getPassword(String userId);
     int updateUser(User user);
     int updatePassword(User user);

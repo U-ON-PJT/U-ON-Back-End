@@ -47,4 +47,12 @@ public class LocationController {
 
         return ResponseEntity.status(200).body(location);
     }
+    @GetMapping("/codes/{parsingPlace}")
+    public ResponseEntity<?> activityDongCode(@PathVariable("parsingPlace") String parsingPlace){
+        String dongCode = locationService.activityDongCode(parsingPlace);
+        System.out.println(parsingPlace);
+        System.out.println(dongCode);
+
+        return ResponseEntity.status(200).body(dongCode);
+    }
 }
